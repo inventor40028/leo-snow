@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>LEO SNOW – The Storm From Africa | Official</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23089908'/%3E%3Ctext x='32' y='43' font-family='Arial Black,Arial' font-size='24' font-weight='900' text-anchor='middle' fill='%23000'%3ELS%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="LEO SNOW – The Storm From Africa. Stream new music, watch videos, check tour dates and join the global takeover.">
+  <meta name="keywords" content="LEO SNOW, afrobeats, African musician, new music, tour, dark wave, experimental pop, The Storm From Africa">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <!-- TODO: replace with the final GitHub Pages / custom domain URL once deployed -->
+  <link rel="canonical" href="">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="LEO SNOW – Official Website | The Storm From Africa">
+  <meta property="og:description" content="Experience the cold wave of LEO SNOW. New music, visuals, and tour dates.">
+  <meta property="og:image" content="pics/hero.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LEO SNOW – The Storm From Africa">
+  <meta name="twitter:description" content="The global takeover begins here.">
+  <meta name="twitter:image" content="pics/hero.png">
+
+  <!-- Preload hero images per device -->
+  <link rel="preload" as="image" href="pics/hero.png" media="(min-width: 768px)">
+  <link rel="preload" as="image" href="pics/mobilehero.png" media="(max-width: 767px)">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,700;14..32,900&family=Playfair+Display&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html, body { overflow-x: clip !important; max-width: 100%; position: relative; width: 100%; scroll-behavior: smooth; }
+    body { overflow-x: clip; }
+    /* Custom scrollbar (accent green on dark) */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #0d0d0d; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #089908; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #FFDE21; }
+    * { scrollbar-width: thin; scrollbar-color: #089908 #0d0d0d; }
+    section[id] { scroll-margin-top: 4.5rem; }
+
+    /* Scroll-aware header: floats over the hero, solid once scrolled */
+    #siteHeader { background: transparent; border-bottom: 1px solid transparent; transition: background 0.35s ease, border-color 0.35s ease; }
+    #siteHeader.header-solid { background: rgba(11, 11, 11, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    #siteHeader [data-nav].nav-active { color: #089908; border-color: #089908; }
+
+    /* Mobile fullscreen menu */
+    .menu-item { display: flex; align-items: baseline; gap: 1.1rem; width: 100%; padding: 0.85rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; cursor: pointer; text-align: left; opacity: 0; transform: translateX(-28px); transition: opacity 0.45s ease, transform 0.45s ease, color 0.2s ease; transition-delay: calc(var(--i) * 55ms); }
+    #mobileMenuOverlay.open .menu-item { opacity: 1; transform: translateX(0); }
+    .menu-item:hover { color: #089908; }
+    .menu-num { font-size: 0.65rem; font-weight: 900; color: #089908; letter-spacing: 0.25em; }
+
+    /* Scroll-reveal animation classes */
+    .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 1.1s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 1.1s ease; }
+    .animate-on-scroll.animated { opacity: 1; transform: translateY(0); }
+    .fade-left { opacity: 0; transform: translateX(-40px); transition: opacity 1.1s cubic-bezier(0.2, 0.9, 0.3, 1), transform 1.1s cubic-bezier(0.2, 0.9, 0.3, 1); }
+    .fade-left.animated { opacity: 1; transform: translateX(0); }
+    .fade-right { opacity: 0; transform: translateX(40px); transition: opacity 1.1s cubic-bezier(0.2, 0.9, 0.3, 1), transform 1.1s cubic-bezier(0.2, 0.9, 0.3, 1); }
+    .fade-right.animated { opacity: 1; transform: translateX(0); }
+    .bounce-up { opacity: 0; transform: translateY(60px); transition: opacity 1.1s cubic-bezier(0.2, 0.85, 0.4, 1), transform 1.1s cubic-bezier(0.2, 0.85, 0.4, 1); }
+    .bounce-up.animated { opacity: 1; transform: translateY(0); }
+    .bounce-from-top { opacity: 0; transform: translateY(-60px); transition: opacity 1.1s cubic-bezier(0.2, 0.85, 0.4, 1), transform 1.1s cubic-bezier(0.2, 0.85, 0.4, 1); }
+    .bounce-from-top.animated { opacity: 1; transform: translateY(0); }
+    .release-card.bounce-up, .release-card.bounce-from-top { transition-delay: calc(var(--order, 0) * 0.12s); }
+    .show-card.fade-left, .show-card.fade-right { transition-delay: calc(var(--order, 0) * 0.12s); }
+
+    /* Hero load-in */
+    .hero-title { opacity: 0; transform: scale(0.98); animation: fadeInScale 0.9s ease forwards; }
+    @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.96); } 100% { opacity: 1; transform: scale(1); } }
+    .typed-text { display: inline-block; }
+    .typed-cursor { display: inline-block; width: 2px; margin-left: 2px; background-color: #089908; animation: blink 0.8s step-end infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    button, input[type="button"], input[type="submit"], input[type="reset"], .viewAllReleasesBtn, .viewAllShowsBtn, .expandLinksBtn, .addEventBtn, .closeModalBtn, .mobile-nav-link, .readMoreBtn { border-radius: 1rem; }
+
+    /* Tap pop */
+    .tap-pop { position: fixed; left: 0; top: 0; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 9999px; pointer-events: none; z-index: 1000; font-size: 0.85rem; opacity: 0; animation: tap-pop 0.42s cubic-bezier(.22,.9,.32,1) forwards; box-shadow: 0 3px 10px rgba(0,0,0,0.25); backdrop-filter: blur(0.6px); }
+    .tap-pop.normal { background: #000; color: #089908; }
+    .tap-pop.alt { background: #089908; color: #000; }
+    .tap-spark { position: absolute; width: 5px; height: 5px; border-radius: 9999px; background: #089908; opacity: 0.7; pointer-events: none; animation: spark-pop 0.36s ease-out forwards; }
+    @keyframes tap-pop { 0% { transform: translate(-50%, -60%) scale(0.55); opacity: 0; } 22% { transform: translate(-50%, -48%) scale(1.08); opacity: 0.7; } 48% { transform: translate(-50%, -52%) scale(0.95); opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.0); opacity: 0; } }
+    @keyframes spark-pop { 0% { opacity: 0.9; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.45); } }
+
+    /* Glass cards */
+    .release-card, .show-card, .gallery-card { background: rgba(8, 8, 8, 0.85); backdrop-filter: blur(8px); border: 1px solid rgba(8, 153, 8, 0.3); border-radius: 1rem; transition: all 0.3s cubic-bezier(0.2, 0.9, 0.2, 1); }
+    .release-card:hover, .show-card:hover, .gallery-card:hover { transform: translateY(-6px); border-color: #089908; box-shadow: 0 20px 30px -12px rgba(8, 153, 8, 0.25); }
+
+    .btn-new { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1.5rem; border-radius: 9999px; border: 1px solid rgba(8, 153, 8, 0.4); background: rgba(8, 153, 8, 0.12); color: #089908; font-weight: 700; transition: all 0.2s; cursor: pointer; }
+    .btn-new:hover { background: rgba(8, 153, 8, 0.25); transform: translateY(-2px); border-color: #089908; }
+    .btn-new-white { background: rgba(255, 255, 255, 0.1); border-color: rgba(8, 153, 8, 0.5); color: #089908; }
+    .btn-new-white:hover { background: rgba(8, 153, 8, 0.2); transform: translateY(-2px); }
+
+    .section-title-new { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; border-left: 6px solid #089908; padding-left: 1.2rem; margin-bottom: 2rem; color: white; }
+    .contact-input { background: black; border: 1px solid #089908; color: #089908; font-weight: 700; padding: 1rem; border-radius: 1rem; transition: all 0.2s; }
+    .contact-input::placeholder { color: #089908; opacity: 0.7; font-weight: 700; }
+    .contact-input:focus { outline: none; border-color: #089908; background: rgba(8, 153, 8, 0.1); box-shadow: 0 0 0 2px rgba(8, 153, 8, 0.25); }
+
+    .social-icon-btn { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(0, 0, 0, 0.7); border: 1px solid #089908; transition: all 0.2s ease; text-decoration: none; flex-shrink: 0; }
+    .social-icon-btn svg, .social-icon-btn i { display: block !important; width: 1.5rem !important; height: 1.5rem !important; color: #089908 !important; text-align: center !important; line-height: 1 !important; margin: 0 auto !important; font-size: 1.5rem !important; transition: color 0.2s ease; }
+    .social-icon-btn:hover { background: #089908; border-color: #089908; transform: translateY(-2px); }
+    .social-icon-btn:hover svg, .social-icon-btn:hover i { color: black !important; }
+
+    /* Popup ad */
+    .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+    .popup-container { width: 85%; max-width: 480px; aspect-ratio: 3/4; background: #000; border: 2px solid #089908; border-radius: 1.5rem; position: relative; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+    @media (min-width: 1024px) { .popup-container { width: 40%; max-width: 480px; } }
+    .popup-close { position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(0,0,0,0.6); color: #089908; width: 2rem; height: 2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 1.25rem; backdrop-filter: blur(4px); border: 1px solid #089908; transition: all 0.2s; }
+    .popup-close:hover { background: #089908; color: black; }
+    .popup-content { padding: 1.5rem; display: flex; flex-direction: column; height: 100%; }
+    .popup-image { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; border: 1px solid rgba(8,153,8,0.3); }
+    .popup-title { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; color: #089908; margin-bottom: 0.75rem; text-align: center; }
+    .popup-message { color: white; font-weight: bold; text-align: center; margin-bottom: 1rem; }
+    .popup-buttons { display: flex; flex-direction: column; gap: 0.75rem; margin-top: auto; }
+    .popup-btn { display: block; text-align: center; padding: 0.75rem; border-radius: 9999px; font-weight: 900; text-transform: uppercase; transition: all 0.2s; cursor: pointer; border: 1px solid rgba(8,153,8,0.4); background: rgba(8,153,8,0.12); color: #089908; text-decoration: none; }
+    .popup-btn:hover { background: rgba(8,153,8,0.3); transform: translateY(-2px); }
+
+    .gallery-desktop-arrow { background: rgba(0,0,0,0.5); color: #089908; width: 48px; height: 48px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(8,153,8,0.5); }
+    .gallery-desktop-arrow:hover { background: #089908; color: black; transform: scale(1.05); }
+
+    /* Fullscreen lightbox */
+    .fullscreen-modal { position: fixed; inset: 0; background: black; z-index: 2000; display: flex; align-items: center; justify-content: center; flex-direction: column; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .fullscreen-image { max-width: 90%; max-height: 80%; object-fit: contain; border: 2px solid #089908; border-radius: 1rem; }
+    .fullscreen-back { position: absolute; top: 2rem; left: 2rem; background: rgba(0,0,0,0.6); color: #089908; padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); border: 1px solid #089908; transition: all 0.2s; }
+    .fullscreen-back:hover { background: #089908; color: black; }
+
+    .gallery-card img, .mobile-carousel-slide img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+    @media (max-width: 768px) { .gallery-desktop-view { display: none; } .gallery-mobile-view { display: block; } }
+    @media (min-width: 769px) { .gallery-desktop-view { display: block; } .gallery-mobile-view { display: none; } }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    .empty-message { text-align: center; padding: 3rem; color: #089908; font-weight: bold; text-transform: uppercase; background: rgba(0,0,0,0.4); border-radius: 1rem; }
+
+    /* Focus card slider (Archives) */
+    .focus-card { position: absolute; width: 320px; height: 420px; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.45); transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease; cursor: pointer; user-select: none; will-change: transform, opacity; background-color: #111; transform-origin: center center; }
+    @media (max-width: 768px) { .focus-card { width: 240px; height: 330px; } }
+    .focus-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .focus-card:not(.active) { filter: brightness(0.7) contrast(1.05); }
+    .focus-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); transition: opacity 0.6s ease; pointer-events: none; }
+    .focus-card.active::after { opacity: 0; }
+    .focus-card-content { position: absolute; top: 1rem; left: 1rem; right: 1rem; bottom: 1rem; border: 2px dashed rgba(255, 255, 255, 0.6); border-radius: 12px; opacity: 0; display: flex; flex-direction: column; padding: 1.5rem; box-sizing: border-box; background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 40%); transform: scale(0.95); transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s; pointer-events: none; }
+    .focus-card.active .focus-card-content { opacity: 1; transform: scale(1); }
+    .focus-card-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: white; margin: 0; font-weight: 400; text-shadow: 1px 1px 3px rgba(0,0,0,0.35); letter-spacing: 0.5px; }
+    .focus-card-number { font-size: 0.8rem; color: rgba(255, 255, 255, 0.9); margin-top: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 99px; padding: 2px 8px; display: inline-block; align-self: flex-start; letter-spacing: 1px; background: rgba(0,0,0,0.15); }
+
+    /* Music cards (Releases) */
+    .music-card { background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+    .music-card .stream-panel { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; }
+    .music-card .stream-panel.open { max-height: 420px; opacity: 1; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { scrollbar-width: none; }
+
+    /* Bio modal */
+    .bio-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+    .bio-modal-overlay.active { opacity: 1; visibility: visible; }
+    .bio-modal-container { width: 90%; max-width: 800px; max-height: 85vh; background: #000; border: 2px solid #089908; border-radius: 1.5rem; position: relative; overflow-y: auto; padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+    .bio-modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.1); color: #089908; width: 2.5rem; height: 2.5rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; border: 1px solid #089908; }
+    .bio-modal-close:hover { background: #089908; color: black; }
+    .bio-modal-content { color: white; font-size: 1.2rem; line-height: 1.6; white-space: pre-wrap; }
+    .bio-modal-content p { margin-bottom: 1rem; }
+    .readMoreBtn { display: inline-block; margin-top: 1rem; background: transparent; border: 1px solid #089908; color: #089908; padding: 0.5rem 1.5rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+    .readMoreBtn:hover { background: #089908; color: black; }
+
+    /* Toast */
+    .cool-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #089908; color: black; padding: 12px 24px; border-radius: 50px; font-weight: bold; z-index: 9999; transition: all 0.3s ease; opacity: 0; pointer-events: none; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .cool-toast.error { background: #eb0905; color: white; }
+    .cool-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body class="bg-[#089908] antialiased">
+  <div id="root"></div>
+
+  <script>
+    // ============================================================
+    // BACKEND — Supabase comes LATER (per plan).
+    // For now the site runs entirely on DEFAULT_DATA below.
+    // When Supabase is connected:
+    //   1. load the content record, assign it to appData, renderApp()
+    //   2. subscribe to changes and re-render on update
+    //   3. contact-form submissions insert into the messages table
+    // The UI code below is already shaped for that swap.
+    // ============================================================
+    const DEFAULT_DATA = {
+      bio: { text: "Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.", photo: "pics/mobilehero.png" },
+      // ===== DEMO CONTENT (hard-coded for preview — edit freely) =====
+      // Later the admin/Supabase will replace these arrays; keep the same shapes.
+      releases: [
+        { id: 1, title: "Cold Wave", year: "2026", type: "Single", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23089908'/%3E%3Cstop offset='1' stop-color='%23044204'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='330' font-family='Arial Black,Arial' font-size='92' font-weight='900' fill='%23fff' text-anchor='middle'%3ECOLD%3C/text%3E%3Ctext x='300' y='430' font-family='Arial Black,Arial' font-size='92' font-weight='900' fill='%23fff' text-anchor='middle'%3EWAVE%3C/text%3E%3C/svg%3E", spotify: "https://open.spotify.com", audiomack: "https://audiomack.com", boomplay: "", deezer: "", apple: "", youtubemusic: "", custom: "" },
+        { id: 2, title: "Harmattan Nights", year: "2025", type: "EP", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FFDE21'/%3E%3Cstop offset='1' stop-color='%23b99e00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='320' font-family='Arial Black,Arial' font-size='72' font-weight='900' fill='%23000' text-anchor='middle'%3EHARMATTAN%3C/text%3E%3Ctext x='300' y='410' font-family='Arial Black,Arial' font-size='72' font-weight='900' fill='%23000' text-anchor='middle'%3ENIGHTS%3C/text%3E%3C/svg%3E", spotify: "", audiomack: "", boomplay: "https://boomplay.com", deezer: "https://deezer.com", apple: "", youtubemusic: "", custom: "" },
+        { id: 3, title: "Different Flow", year: "2026", type: "Single", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23eb0905'/%3E%3Cstop offset='1' stop-color='%236e0402'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='320' font-family='Arial Black,Arial' font-size='76' font-weight='900' fill='%23fff' text-anchor='middle'%3EDIFFERENT%3C/text%3E%3Ctext x='300' y='410' font-family='Arial Black,Arial' font-size='76' font-weight='900' fill='%23fff' text-anchor='middle'%3EFLOW%3C/text%3E%3C/svg%3E", spotify: "https://open.spotify.com", audiomack: "", boomplay: "", deezer: "", apple: "https://music.apple.com", youtubemusic: "https://music.youtube.com", custom: "https://audiomack.com" },
+        { id: 4, title: "Accra Nights", year: "2024", type: "Mixtape", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23134e4a'/%3E%3Cstop offset='1' stop-color='%23090504'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='320' font-family='Arial Black,Arial' font-size='80' font-weight='900' fill='%23FFDE21' text-anchor='middle'%3EACCRA%3C/text%3E%3Ctext x='300' y='410' font-family='Arial Black,Arial' font-size='80' font-weight='900' fill='%23FFDE21' text-anchor='middle'%3ENIGHTS%3C/text%3E%3C/svg%3E", spotify: "https://open.spotify.com", audiomack: "https://audiomack.com", boomplay: "", deezer: "", apple: "", youtubemusic: "", custom: "" }
+      ],
+      shows: [
+        { id: 101, date: "2026-10-24", venue: "Unity Gardens", city: "Accra, Ghana", ticket: "https://example.com/tickets" },
+        { id: 102, date: "2026-11-15", venue: "Neo Night Fest", city: "Lagos, Nigeria", ticket: "" },
+        { id: 103, date: "2026-12-06", venue: "SnowBall Live", city: "London, UK", ticket: "https://example.com/tickets" },
+        { id: 104, date: "2027-01-17", venue: "Afro Future Fest", city: "Johannesburg, South Africa", ticket: "" },
+        { id: 105, date: "2027-02-14", venue: "Cold Room Sessions", city: "Berlin, Germany", ticket: "https://example.com/tickets" }
+      ],
+      gallery: [
+        { id: 201, url: "pics/hero.png", title: "On Tour" },
+        { id: 202, url: "pics/kente.jpg", title: "Kente Culture" },
+        { id: 203, url: "pics/mobilehero.png", title: "Backstage" }
+      ],
+      socials: { tiktok: "https://tiktok.com", instagram: "https://instagram.com", spotify: "https://spotify.com", audiomack: "https://audiomack.com", facebook: "https://facebook.com", threads: "https://threads.net", snapchat: "https://snapchat.com", twitter: "https://twitter.com", youtube: "https://youtube.com", soundcloud: "https://soundcloud.com", applemusic: "https://music.apple.com", bandcamp: "https://bandcamp.com" },
+      videos: [],
+      popupAd: { enabled: false, type: "music", title: "", imageUrl: "", message: "", releaseId: null, showId: null, videoIndex: -1, customButtons: [] },
+      messages: []
+    };
+
+    let appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    let popupShown = false;
+    let focusIndex = 0, focusTouchX = 0;
+
+    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
+
+    // YouTube link -> embed URL converter (see instruction/youtubetembbeded.md)
+    function getYoutubeEmbedUrl(url) { if (!url) return ''; let videoId = ''; if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0]; else if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0]; else if (url.includes('/embed/')) return url; return videoId ? `https://www.youtube.com/embed/${videoId}` : ''; }
+
+    // Focus card slider (Archives)
+    function buildFocusSlider() {
+      const wrap = document.getElementById('focusCards');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      const items = appData.gallery || [];
+      if (items.length === 0) return;
+      focusIndex = Math.min(focusIndex, items.length - 1);
+      items.forEach((item, index) => {
+        const numStr = String(index + 1).padStart(2, '0'), totalStr = String(items.length).padStart(2, '0');
+        const title = item.title || ((item.url.split('/').pop().split('.')[0] || '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())) || ('Archive ' + numStr);
+        const card = document.createElement('div');
+        card.className = 'focus-card';
+        card.innerHTML = `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(title)}" loading="lazy"><div class="focus-card-content"><h3 class="focus-card-title">${escapeHtml(title)}</h3><div class="focus-card-number">${numStr} - ${totalStr}</div></div>`;
+        card.addEventListener('click', () => { if (focusIndex !== index) { focusIndex = index; updateFocusSlider(); } else { openFullscreen(item.url); } });
+        wrap.appendChild(card);
+      });
+      const prev = document.getElementById('focusPrev'), next = document.getElementById('focusNext');
+      if (prev) prev.addEventListener('click', () => { if (focusIndex > 0) { focusIndex--; updateFocusSlider(); } });
+      if (next) next.addEventListener('click', () => { if (focusIndex < items.length - 1) { focusIndex++; updateFocusSlider(); } });
+      const slider = document.getElementById('focusSlider');
+      if (slider) {
+        slider.addEventListener('touchstart', (e) => { focusTouchX = e.touches[0].clientX; }, { passive: true });
+        slider.addEventListener('touchend', (e) => { const dx = focusTouchX - e.changedTouches[0].clientX; if (Math.abs(dx) > 40) { if (dx > 0 && focusIndex < items.length - 1) { focusIndex++; updateFocusSlider(); } else if (dx < 0 && focusIndex > 0) { focusIndex--; updateFocusSlider(); } } }, { passive: true });
+      }
+      renderFocusDots();
+      updateFocusSlider();
+    }
+    function renderFocusDots() {
+      const dots = document.getElementById('focusDots');
+      if (!dots) return;
+      dots.innerHTML = '';
+      (appData.gallery || []).forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `w-2.5 h-2.5 rounded-full transition-all ${idx === focusIndex ? 'bg-[#089908] w-6' : 'bg-white/40 hover:bg-white/70'}`;
+        dot.addEventListener('click', () => { focusIndex = idx; updateFocusSlider(); });
+        dots.appendChild(dot);
+      });
+    }
+    function updateFocusSlider() {
+      const wrap = document.getElementById('focusCards');
+      if (!wrap) return;
+      const cards = wrap.querySelectorAll('.focus-card');
+      renderFocusDots();
+      cards.forEach((card, index) => {
+        const offset = index - focusIndex;
+        card.classList.remove('active');
+        if (offset === 0) card.classList.add('active');
+        let tx = 0, ty = 0, rz = 0, scale = 1, z = 0, opacity = 1;
+        if (offset === 0) { ty = -15; rz = -3.5; z = 10; }
+        else if (offset === -1) { tx = -280; ty = 15; rz = 7.5; scale = 0.88; z = 8; }
+        else if (offset === -2) { tx = -530; ty = -50; rz = -6; scale = 0.8; z = 6; }
+        else if (offset < -2) { tx = -750; ty = -100; rz = -12; scale = 0.7; z = 4; opacity = 0; }
+        else if (offset === 1) { tx = 280; ty = 35; rz = -6.5; scale = 0.88; z = 8; }
+        else if (offset === 2) { tx = 520; ty = -40; rz = 5; scale = 0.8; z = 6; }
+        else if (offset > 2) { tx = 750; ty = -80; rz = 12; scale = 0.7; z = 4; opacity = 0; }
+        if (window.innerWidth <= 768) { tx *= 0.55; ty *= 0.5; }
+        card.style.transform = `translate(${tx}px, ${ty}px) rotate(${rz}deg) scale(${scale})`;
+        card.style.zIndex = z;
+        card.style.opacity = opacity;
+      });
+    }
+    function openFullscreen(imgUrl) { const modal = document.createElement('div'); modal.className = 'fullscreen-modal'; modal.innerHTML = `<button class="fullscreen-back"><i class="fa fa-arrow-left"></i> Back</button><img src="${escapeHtml(imgUrl)}" class="fullscreen-image" alt="Fullscreen view">`; document.body.appendChild(modal); document.body.style.overflow = 'hidden'; const backBtn = modal.querySelector('.fullscreen-back'); backBtn.onclick = () => { modal.remove(); document.body.style.overflow = ''; }; modal.onclick = (e) => { if (e.target === modal) { modal.remove(); document.body.style.overflow = ''; } }; }
+
+    // Typing effect (speed = 15ms)
+    function typeText(element, text, speed = 15) { let i = 0; element.innerHTML = ''; const cursorSpan = document.createElement('span'); cursorSpan.className = 'typed-cursor'; function type() { if (i < text.length) { element.innerHTML += text.charAt(i); i++; setTimeout(type, speed); } else { element.appendChild(cursorSpan); } } type(); }
+
+    // Scroll animations (with auto-typing on short bio)
+    function initScrollAnimations() {
+      document.querySelectorAll('.release-card.bounce-up, .release-card.bounce-from-top').forEach((card, idx) => { card.style.setProperty('--order', idx); });
+      document.querySelectorAll('.show-card.fade-left, .show-card.fade-right').forEach((card, idx) => { card.style.setProperty('--order', idx); });
+      const animatedElements = document.querySelectorAll('.animate-on-scroll, .fade-left, .fade-right, .bounce-up, .bounce-from-top');
+      const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('animated'); }, Math.random() * 100); observer.unobserve(entry.target); } }); }, { threshold: 0.5, rootMargin: '0px' });
+      animatedElements.forEach(el => observer.observe(el));
+      // Auto-typing on shortened bio
+      const shortBioPara = document.querySelector('.bio-typing-short');
+      if (shortBioPara && !shortBioPara.dataset.typed) {
+        const bioObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !shortBioPara.dataset.typed) {
+              shortBioPara.dataset.typed = 'true';
+              const fullText = appData.bio.text;
+              const shortText = fullText.length > 150 ? fullText.substring(0, 150) + "..." : fullText;
+              typeText(shortBioPara, shortText, 15);
+              bioObserver.unobserve(shortBioPara);
+            }
+          });
+        }, { threshold: 0.6, rootMargin: '0px' });
+        bioObserver.observe(shortBioPara);
+      }
+      const storyImg = document.querySelector('.story-img');
+      if (storyImg) { const imgObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { setTimeout(() => { storyImg.classList.add('grayscale-transition'); }, 500); imgObserver.unobserve(storyImg); } }); }, { threshold: 0.5, rootMargin: '0px' }); imgObserver.observe(storyImg); }
+    }
+
+    // Structured data (JSON-LD)
+    function injectStructuredData() {
+      const existing = document.querySelector('#structured-data');
+      if (existing) existing.remove();
+      const script = document.createElement('script');
+      script.id = 'structured-data';
+      script.type = 'application/ld+json';
+      const musicGroup = {
+        "@context": "https://schema.org",
+        "@type": "MusicGroup",
+        "name": "LEO SNOW",
+        "alternateName": "The Storm From Africa",
+        "image": "pics/hero.png",
+        "genre": ["Afrobeats", "Alté", "Hip-Hop", "Experimental"],
+        "album": (appData.releases || []).map(r => ({ "@type": "MusicAlbum", "name": r.title, "datePublished": r.year })),
+        "sameAs": Object.values(appData.socials || {}).filter(v => v && v !== '#')
+      };
+      const events = (appData.shows || []).map(s => ({
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": `LEO SNOW at ${s.venue}`,
+        "startDate": s.date,
+        "location": { "@type": "Place", "name": s.venue, "address": s.city },
+        "offers": s.ticket ? { "@type": "Offer", "url": s.ticket } : undefined
+      })).filter(e => e);
+      script.textContent = JSON.stringify([musicGroup, ...events]);
+      document.head.appendChild(script);
+    }
+
+    // Popup ad (kept from the DBEE BOY setup; disabled until the admin exists)
+    function showPopupAd() { const ad = appData.popupAd; if (!ad || !ad.enabled) return; let contentHtml = '', defaultTitle = '', imageUrl = ad.imageUrl || '', release = null, show = null; if (ad.type === 'music' && ad.releaseId) { release = appData.releases.find(r => r.id === ad.releaseId); if (release) { defaultTitle = ad.title || `${release.title} - ${release.year}`; imageUrl = release.art; contentHtml = `<div class="popup-content"><img src="${escapeHtml(imageUrl)}" class="popup-image" alt="Release cover"><div class="popup-title">${escapeHtml(defaultTitle)}</div><div class="popup-buttons"><button class="popup-btn" id="popupMusicBtn">🎵 LISTEN NOW</button></div></div>`; } } else if (ad.type === 'tour' && ad.showId) { show = appData.shows.find(s => s.id === ad.showId); if (show) { defaultTitle = ad.title || 'EVENT COMING UP'; contentHtml = `<div class="popup-content">${imageUrl ? `<img src="${escapeHtml(imageUrl)}" class="popup-image" alt="Event">` : ''}<div class="popup-title">${escapeHtml(defaultTitle)}</div><div class="popup-message">${escapeHtml(show.venue)} - ${escapeHtml(show.city)}<br>${show.date}</div><div class="popup-buttons">${show.ticket ? `<a href="${show.ticket}" target="_blank" class="popup-btn">🎟️ GET TICKETS</a>` : ''}<button class="popup-btn" id="popupAddEventBtn">📅 ADD EVENT</button></div></div>`; } } else if (ad.type === 'video' && ad.videoIndex >= 0 && appData.videos[ad.videoIndex]) { defaultTitle = ad.title || 'LATEST VIDEO'; contentHtml = `<div class="popup-content">${imageUrl ? `<img src="${escapeHtml(imageUrl)}" class="popup-image" alt="Video thumbnail">` : ''}<div class="popup-title">${escapeHtml(defaultTitle)}</div><div class="popup-buttons"><button class="popup-btn" id="popupVideoBtn">▶️ WATCH VIDEO</button></div></div>`; } else if (ad.type === 'custom') { defaultTitle = ad.title || 'SPECIAL OFFER'; const buttonsHtml = (ad.customButtons || []).map(btn => `<a href="${escapeHtml(btn.link)}" target="_blank" class="popup-btn">${escapeHtml(btn.text)}</a>`).join(''); contentHtml = `<div class="popup-content">${imageUrl ? `<img src="${escapeHtml(imageUrl)}" class="popup-image" alt="Custom">` : ''}<div class="popup-title">${escapeHtml(defaultTitle)}</div><div class="popup-message">${escapeHtml(ad.message || '')}</div><div class="popup-buttons">${buttonsHtml}</div></div>`; } else return; const overlay = document.createElement('div'); overlay.className = 'popup-overlay'; overlay.innerHTML = `<div class="popup-container"><div class="popup-close">✕</div>${contentHtml}</div>`; document.body.appendChild(overlay); setTimeout(() => { overlay.style.opacity = '1'; }, 10); const closePopup = () => { overlay.style.opacity = '0'; setTimeout(() => overlay.remove(), 300); }; overlay.querySelector('.popup-close').addEventListener('click', closePopup); overlay.addEventListener('click', (e) => { if (e.target === overlay) closePopup(); }); if (ad.type === 'music' && release) { document.getElementById('popupMusicBtn')?.addEventListener('click', () => { document.getElementById('music')?.scrollIntoView({ behavior: 'smooth' }); closePopup(); }); } else if (ad.type === 'tour' && show) { document.getElementById('popupAddEventBtn')?.addEventListener('click', () => { showAddEventModal(show); closePopup(); }); } else if (ad.type === 'video') { document.getElementById('popupVideoBtn')?.addEventListener('click', () => { document.getElementById('videos')?.scrollIntoView({ behavior: 'smooth' }); closePopup(); }); } }
+
+    function showAddEventModal(show) { const modal = document.createElement('div'); modal.className = 'fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-4'; const startDate = show.date.replace(/-/g, ''); const d = new Date(show.date); d.setHours(d.getHours() + 2); const endDate = d.toISOString().slice(0,10).replace(/-/g, ''); const details = encodeURIComponent(`Venue: ${show.venue}\nCity: ${show.city}`); const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(show.venue)}&dates=${startDate}T190000Z/${endDate}T210000Z&details=${details}`; const appleUrl = `https://calendar.apple.com/?add_event=${encodeURIComponent(show.venue)}&start_date=${show.date}&end_date=${show.date}`; modal.innerHTML = `<div class="bg-white text-black p-8 rounded max-w-md w-full text-center"><h3 class="text-2xl font-black uppercase mb-6">Add to Calendar</h3><div class="flex flex-col gap-3"><a href="${googleUrl}" target="_blank" class="px-6 py-3 bg-[#4285F4] text-white font-black uppercase hover:scale-105 transition-transform">Google Calendar</a><a href="${appleUrl}" target="_blank" class="px-6 py-3 bg-gray-900 text-white font-black uppercase hover:scale-105 transition-transform">Apple Calendar</a></div><button class="closeModalBtn mt-6 text-gray-600 font-bold hover:text-black">Cancel</button></div>`; document.body.appendChild(modal); modal.querySelector('.closeModalBtn').onclick = () => modal.remove(); modal.onclick = (e) => { if (e.target === modal) modal.remove(); }; }
+
+    // Toast
+    function showCoolToast(msg, type = 'success') {
+      let toast = document.querySelector('.cool-toast');
+      if (!toast) { toast = document.createElement('div'); toast.className = 'cool-toast'; document.body.appendChild(toast); }
+      toast.textContent = msg;
+      toast.classList.toggle('error', type === 'error');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Render helpers
+    function SectionHeading(children, outline = false, color = 'green') { const strokeColor = color === 'red' ? '#eb0905' : '#089908'; if (outline) return `<h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter mb-12 text-transparent" style="-webkit-text-stroke: 2px ${strokeColor};">${children}</h2>`; return `<h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter mb-12" style="color: ${strokeColor};">${children}</h2>`; }
+
+    function Navbar() { return `<nav id="siteHeader" class="fixed top-0 left-0 w-full z-50"><div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-4"><div id="logo-home" class="text-lg font-black tracking-widest text-white cursor-pointer hover:italic transition-all shrink-0">LEO SNOW</div><div class="hidden lg:flex items-center gap-7 text-[11px] font-bold uppercase tracking-[0.18em] text-gray-300"><a href="#music" data-nav="MUSIC" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all">Music</a><a href="#videos" data-nav="VIDEOS" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all">Videos</a><a href="#shows" data-nav="EVENTS" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all">Events</a><a href="#about" data-nav="ABOUT" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all">About</a><a href="#gallery" data-nav="VISUALS" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all">Visuals</a><a href="#contact" data-nav="BOOKING" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all">Booking</a><button id="MERCHBtnDesktop" class="pb-1 border-b-2 border-transparent hover:text-white hover:border-[#089908] transition-all cursor-pointer uppercase text-[11px] font-bold tracking-[0.18em] text-gray-300">Merch</button></div><div class="hidden lg:flex items-center gap-4 text-gray-400 shrink-0"><a href="${appData.socials.youtube}" target="_blank" aria-label="YouTube" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-youtube"></i></a><a href="${appData.socials.instagram}" target="_blank" aria-label="Instagram" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-instagram"></i></a><a href="${appData.socials.tiktok}" target="_blank" aria-label="TikTok" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-tiktok"></i></a><a href="${appData.socials.twitter}" target="_blank" aria-label="Twitter" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-x-twitter"></i></a></div><button class="lg:hidden text-white" id="mobileMenuBtn"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button></div></nav><div id="mobileMenuOverlay" class="fixed inset-0 bg-[#0b0b0b] z-[60] flex flex-col overflow-y-auto hidden"><div class="flex items-center justify-between px-6 h-14 border-b border-white/5 shrink-0"><span class="text-lg font-black tracking-widest text-white">LEO SNOW</span><button id="closeMobileMenuBtn" class="text-white w-9 h-9 flex items-center justify-center hover:text-[#089908] transition-colors" aria-label="Close menu"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div><nav class="flex-1 flex flex-col justify-center px-8 py-8"><a href="#home" class="mobile-nav-link menu-item" style="--i:0"><span class="menu-num">01</span>Home</a><a href="#music" class="mobile-nav-link menu-item" style="--i:1"><span class="menu-num">02</span>Music</a><a href="#videos" class="mobile-nav-link menu-item" style="--i:2"><span class="menu-num">03</span>Videos</a><a href="#shows" class="mobile-nav-link menu-item" style="--i:3"><span class="menu-num">04</span>Events</a><a href="#about" class="mobile-nav-link menu-item" style="--i:4"><span class="menu-num">05</span>About</a><a href="#gallery" class="mobile-nav-link menu-item" style="--i:5"><span class="menu-num">06</span>Visuals</a><a href="#contact" class="mobile-nav-link menu-item" style="--i:6"><span class="menu-num">07</span>Booking</a><button id="MERCHBtnMobile" class="mobile-nav-link menu-item" style="--i:7"><span class="menu-num">08</span>Merch</button></nav><div class="px-8 pb-10 flex items-center gap-6 text-gray-400 shrink-0"><a href="${appData.socials.youtube}" target="_blank" aria-label="YouTube" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-youtube"></i></a><a href="${appData.socials.instagram}" target="_blank" aria-label="Instagram" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-instagram"></i></a><a href="${appData.socials.tiktok}" target="_blank" aria-label="TikTok" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-tiktok"></i></a><a href="${appData.socials.twitter}" target="_blank" aria-label="Twitter" class="hover:text-[#089908] transition-colors"><i class="fa-brands fa-x-twitter"></i></a><span class="ml-auto text-[10px] font-black uppercase tracking-[0.25em] text-white/25">The Storm From Africa</span></div></div>`; }
+
+    function showMERCHComingSoon() { const modal = document.createElement('div'); modal.className = 'fixed inset-0 bg-black z-[200] flex flex-col items-center justify-center p-6 transition-all'; modal.innerHTML = `<div class="text-center max-w-2xl"><h2 class="text-8xl md:text-9xl font-black uppercase text-[#089908] mb-6">Coming Soon</h2><p class="text-2xl md:text-3xl font-bold text-white mb-12">Merchandise drop is being prepared.<br>Stay tuned.</p><button id="MERCHBackBtn" class="bg-[#089908] text-black px-10 py-4 text-xl font-black uppercase hover:scale-105 transition-all shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)] rounded-btn">← Go Back</button></div>`; document.body.appendChild(modal); document.body.style.overflow = 'hidden'; const closeModal = () => { modal.remove(); document.body.style.overflow = ''; }; modal.querySelector('#MERCHBackBtn').addEventListener('click', closeModal); modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }); }
+
+    function Hero() { return `<div id="heroStage" class="relative h-[260vh]"><section id="home" class="sticky top-0 h-screen z-10 flex items-center overflow-hidden"><h1 class="sr-only">LEO SNOW – Official Website of The Storm From Africa</h1><div class="absolute inset-0 z-0 hidden md:block hero-bg" data-zoombg><img src="pics/hero.png" alt="LEO SNOW hero" class="w-full h-full object-cover object-[75%_50%]"><div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent"></div></div><div class="absolute inset-0 z-0 md:hidden hero-bg" data-zoombg><img src="pics/mobilehero.png" alt="LEO SNOW hero" class="w-full h-full object-cover object-right"><div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-transparent"></div></div><div class="absolute z-10 left-[2vw] top-20 lg:left-[6vw] lg:top-[18vh]" data-zoom="1"><div class="hero-title"><img src="pics/leo-snow-logo.png" alt="LEO SNOW" class="w-[min(92vw,55vh)] lg:w-[min(38vw,calc(132vh-295px))] max-w-none h-auto"></div></div><div class="relative z-10 px-4 md:px-8 w-full flex flex-col justify-end h-full pt-20 pb-10 md:pb-12" data-zoom="0.7"><div class="space-y-3"><div class="relative"><div class="absolute left-0 top-0 bottom-0 w-0.5 bg-[#FFDE21]"></div><div class="flex flex-col items-start gap-1 pl-4"><span class="bg-black text-white font-black uppercase text-sm md:text-lg px-2 py-0.5 leading-tight">Ghana Boy With</span><span class="bg-black text-white font-black uppercase text-sm md:text-lg px-2 py-0.5 leading-tight">A Different Flow</span></div></div><a href="#music" class="inline-block bg-[#089908] text-black px-8 py-4 text-lg font-black uppercase hover:bg-[#FFDE21] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">Stream Latest</a></div></div></section>`; }
+
+    function AboutSection() {
+      return `
+        <section id="about" class="sticky top-0 -mt-[100vh] h-screen z-0 bg-black overflow-hidden flex items-center">
+          <div class="relative max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center w-full px-6">
+            <div class="relative fade-left animate-on-scroll mx-auto w-full max-w-md md:max-w-none">
+              <div class="absolute -top-4 -left-4 w-24 h-24 md:w-32 md:h-32 bg-[#089908]"></div>
+              <img src="${appData.bio.photo}" alt="The Story of LEO SNOW - artist portrait" class="relative z-10 w-full h-[52vh] md:h-[62vh] object-cover object-top shadow-2xl" loading="lazy">
+            </div>
+            <div class="relative z-10 fade-right animate-on-scroll">
+              <div class="flex items-center gap-4 mb-1">
+                <span class="w-10 h-0.5 bg-[#089908] shrink-0"></span>
+                <h2 class="text-3xl md:text-5xl font-black uppercase italic text-[#089908]">I'm Leo Snow.</h2>
+              </div>
+              <h3 class="text-3xl md:text-5xl font-black uppercase text-white mb-6">Afrobeats Artist</h3>
+              <p class="text-gray-300 leading-relaxed mb-8 max-w-lg">${escapeHtml(appData.bio.text)}</p>
+              <button id="readMoreBioBtn" class="group inline-flex items-center gap-4 bg-transparent border border-white/20 rounded-full pl-6 pr-1.5 py-1.5 font-black uppercase text-sm tracking-wide text-white hover:border-[#089908] transition-all">
+                More About Me
+                <span class="w-10 h-10 rounded-full bg-[#089908] text-black flex items-center justify-center group-hover:translate-x-1 transition-transform"><i class="fa fa-arrow-right"></i></span>
+              </button>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function MusicSection() {
+      const releases = appData.releases || [];
+      const card = (r, idx, extra) => {
+        const platforms = [["spotify", "Spotify", "fa-brands fa-spotify"], ["audiomack", "Audiomack", "fa-solid fa-headphones"], ["boomplay", "Boomplay", "fa-solid fa-play"], ["deezer", "Deezer", "fa-brands fa-deezer"], ["apple", "Apple Music", "fa-brands fa-apple"], ["youtubemusic", "YouTube Music", "fa-brands fa-youtube"], ["custom", "Website", "fa fa-link"]].filter(p => r[p[0]]);
+        const links = platforms.map(p => `<a href="${escapeHtml(r[p[0]])}" target="_blank" class="flex items-center gap-2 bg-black text-white text-[11px] font-black uppercase tracking-wide px-3 py-2.5 rounded-lg hover:bg-[#089908] transition-colors"><i class="${p[2]}"></i>${p[1]}</a>`).join("");
+        return `<div class="music-card ${extra}"><div class="relative"><img src="${escapeHtml(r.art)}" alt="${escapeHtml(r.title)} cover" class="w-full aspect-square object-cover" loading="lazy"><span class="absolute top-3 left-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1">${escapeHtml(r.type)}</span>${idx === 0 ? '<div class="bg-white text-black text-center text-[11px] font-black uppercase tracking-[0.35em] py-2.5 border-t border-gray-100">Featured</div>' : ""}</div><div class="p-4"><h3 class="font-black uppercase text-lg leading-tight text-black">${escapeHtml(r.title)}</h3><p class="text-sm text-gray-500 mt-1">${escapeHtml(r.type)} \u00b7 ${escapeHtml(r.year)}</p><div class="border-t border-gray-200 mt-3 pt-3"><button class="stream-toggle flex items-center gap-2 text-sm font-bold text-black hover:text-[#089908] transition-colors" data-id="${r.id}">Stream <i class="fa fa-chevron-down text-[10px] transition-transform"></i></button></div><div class="stream-panel mt-3" data-panel="${r.id}"><div class="grid grid-cols-2 gap-2">${links}</div></div></div></div>`;
+      };
+      const visibleCount = 4;
+      const hasMore = releases.length > visibleCount;
+      if (releases.length === 0) {
+        return `<section id="music" class="relative py-24 px-6 bg-black"><div class="max-w-7xl mx-auto"><div class="empty-message">🎵 No releases yet. Check back soon.</div></div></section>`;
+      }
+      return `<section id="music" class="relative py-24 px-6 bg-black overflow-hidden"><div class="pointer-events-none select-none absolute inset-x-0 bottom-0 text-center font-black uppercase leading-none text-white/[0.06]" style="font-size: clamp(4.5rem, 14vw, 12rem);">Music</div><div class="relative max-w-7xl mx-auto"><div class="hidden lg:grid grid-cols-4 gap-5">${releases.map((r, i) => card(r, i, i >= visibleCount ? "release-extra lg:hidden" : "")).join("")}</div><div class="lg:hidden"><div id="musicScroller" class="no-scrollbar flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-6 px-6 pb-2" style="-webkit-overflow-scrolling: touch;">${releases.map((r, i) => card(r, i, "shrink-0 w-[78vw] max-w-[320px] snap-center")).join("")}</div><div id="musicDots" class="flex justify-center gap-2 mt-5"></div></div>${hasMore ? `<div class="text-center mt-12"><button id="viewAllReleases" class="bg-black border border-white/25 text-white text-xs font-black uppercase tracking-[0.25em] px-8 py-4 hover:border-[#089908] transition-colors">Listen To Our Full Playlist</button></div>` : `<div class="text-center mt-12"><a href="${escapeHtml((releases.find(r => r.spotify) || { spotify: appData.socials.spotify }).spotify)}" target="_blank" class="inline-block bg-black border border-white/25 text-white text-xs font-black uppercase tracking-[0.25em] px-8 py-4 hover:border-[#089908] transition-colors">Listen To Our Full Playlist</a></div>`}</div></section>`;
+    }
+
+    function initMusicSection() {
+      const scroller = document.getElementById('musicScroller');
+      const dotsWrap = document.getElementById('musicDots');
+      const items = appData.releases || [];
+      document.querySelectorAll('.stream-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panel = document.querySelector(`[data-panel="${btn.getAttribute('data-id')}"]`);
+          if (!panel) return;
+          const open = panel.classList.toggle('open');
+          const chev = btn.querySelector('i');
+          if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+          btn.classList.toggle('text-[#089908]', open);
+        });
+      });
+      const vab = document.getElementById('viewAllReleases');
+      if (vab) {
+        let open = false;
+        vab.addEventListener('click', () => {
+          open = !open;
+          document.querySelectorAll('.release-extra').forEach(el => { el.classList.toggle('lg:hidden', !open); el.classList.toggle('lg:block', open); });
+          vab.textContent = open ? 'Show Less' : 'Listen To Our Full Playlist';
+        });
+      }
+      const vas = document.getElementById('viewAllShows');
+      if (vas) {
+        let open = false;
+        vas.addEventListener('click', () => {
+          open = !open;
+          document.querySelectorAll('.show-extra').forEach(el => el.classList.toggle('hidden', !open));
+          vas.textContent = open ? 'Show Less' : 'View All Show Dates';
+        });
+      }
+      if (!scroller || !dotsWrap || items.length === 0) return;
+      dotsWrap.innerHTML = items.map((_, i) => `<button data-i="${i}" class="h-2 rounded-full transition-all ${i === 0 ? 'w-5 bg-[#089908]' : 'w-2 bg-white/30'}" aria-label="Release ${i + 1}"></button>`).join('');
+      const goTo = (i) => { const c = scroller.children[i]; if (c) scroller.scrollTo({ left: c.offsetLeft - scroller.offsetLeft, behavior: 'smooth' }); };
+      dotsWrap.querySelectorAll('button').forEach(b => b.addEventListener('click', () => goTo(+b.dataset.i)));
+      scroller.addEventListener('scroll', () => {
+        const w = scroller.children[0] ? scroller.children[0].offsetWidth + 20 : 1;
+        const i = Math.max(0, Math.min(items.length - 1, Math.round(scroller.scrollLeft / w)));
+        dotsWrap.querySelectorAll('button').forEach((b, j) => { const on = j === i; b.classList.toggle('w-5', on); b.classList.toggle('w-2', !on); b.classList.toggle('bg-[#089908]', on); b.classList.toggle('bg-white/30', !on); });
+      }, { passive: true });
+    }
+
+    function VideosSection() {
+      let videos = Array.isArray(appData.videos) ? appData.videos.filter(Boolean).slice(0,3) : [];
+      if (videos.length === 0) {
+        return `<section id="videos" class="py-24 px-6 bg-black"><div class="max-w-7xl mx-auto"><div class="fade-left"><h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter mb-12 text-[#089908]">Videos</h2></div><div class="empty-message">🎥 No videos yet. Check back later.</div></div></section>`;
+      }
+      return `<section id="videos" class="py-24 px-6 bg-black"><div class="max-w-7xl mx-auto"><div class="fade-left"><h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter mb-12 text-[#089908]">Videos</h2></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">${videos.map((url, vIdx) => { const embedUrl = getYoutubeEmbedUrl(url); return embedUrl ? `<div class="bounce-up animate-on-scroll release-card p-2"><div class="aspect-video w-full overflow-hidden rounded-lg"><iframe src="${embedUrl}" allowfullscreen loading="lazy" class="w-full h-full" style="border:0;" title="LEO SNOW video ${vIdx+1}"></iframe></div></div>` : ''; }).join('')}</div><div class="text-center mt-8"><a href="https://www.youtube.com" target="_blank" class="btn-new animate-on-scroll"><!-- TODO: point at the real LEO SNOW channel -->More on YouTube →</a></div></div></section>`;
+    }
+
+    function ShowsSection() {
+      const shows = appData.shows || [];
+      const visibleCount = 4;
+      const hasMore = shows.length > visibleCount;
+      const row = (s, extra) => `<div class="bg-white${extra} p-6 md:p-7 flex items-center justify-between gap-4 shadow-[0_15px_35px_rgba(0,0,0,0.35)]"><div class="min-w-0"><h3 class="font-black uppercase text-xl md:text-2xl text-black tracking-tight">${escapeHtml(s.venue)}</h3><p class="mt-1.5 flex items-center gap-3 text-sm md:text-base text-gray-600"><span>${new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span><span class="w-px h-4 bg-gray-300"></span><span>${escapeHtml(s.city)}</span></p></div><div class="shrink-0 flex items-center gap-2">${s.ticket ? `<a href="${escapeHtml(s.ticket)}" target="_blank" class="bg-black text-white text-[11px] font-black uppercase tracking-[0.25em] px-6 py-3.5 hover:bg-[#089908] transition-colors">Tickets</a>` : ""}<button class="addEventBtn bg-black text-white w-[46px] h-[46px] flex items-center justify-center hover:bg-[#089908] transition-colors" data-date="${escapeHtml(s.date)}" data-venue="${escapeHtml(s.venue)}" data-city="${escapeHtml(s.city)}" aria-label="Set a reminder"><i class="fa-regular fa-calendar"></i></button></div></div>`;
+      if (shows.length === 0) {
+        return `<section id="shows" class="relative py-28 px-6 bg-black bg-cover bg-center overflow-hidden" style="background-image: url('pics/event.JPG');"><div class="absolute inset-0 bg-black/60"></div><div class="relative max-w-5xl mx-auto"><div class="empty-message">📅 No upcoming shows announced. Stay tuned.</div></div></section>`;
+      }
+      return `<section id="shows" class="relative py-28 px-6 bg-black bg-cover bg-center overflow-hidden" style="background-image: url('pics/event.JPG');"><div class="absolute inset-0 bg-black/50"></div><div class="pointer-events-none select-none absolute inset-x-0 bottom-0 text-center font-black uppercase leading-[0.8] text-white/25" style="font-size: clamp(4.5rem, 15vw, 13rem);">Shows</div><div class="relative max-w-5xl mx-auto"><div class="grid md:grid-cols-2 gap-6">${shows.map((s, i) => row(s, i >= visibleCount ? ' show-extra hidden' : '')).join("")}</div><div class="text-center mt-10"><button id="viewAllShows" class="bg-black border border-white/25 text-white text-xs font-black uppercase tracking-[0.25em] px-8 py-4 hover:border-[#089908] transition-colors">View All Show Dates</button></div></div></section>`;
+    }
+
+    function GallerySection() {
+      const galleryItems = appData.gallery || [];
+      if (galleryItems.length === 0) {
+        return `<section id="gallery" class="py-24 px-6 bg-black"><div class="max-w-7xl mx-auto"><div class="fade-left"><h2 class="font-black uppercase tracking-tighter mb-12" style="border-left: 6px solid #eb0905; padding-left: 1.2rem; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1;"><span class="text-[#FFDE21]">Showcase</span> <span class="text-[#089908]">Room</span></h2></div><div class="empty-message">📸 No images in gallery yet.</div></div></section>`;
+      }
+      return `<section id="gallery" class="py-24 px-6 bg-black overflow-hidden"><div class="max-w-7xl mx-auto"><div class="fade-left"><h2 class="font-black uppercase tracking-tighter mb-12" style="border-left: 6px solid #eb0905; padding-left: 1.2rem; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1;"><span class="text-[#FFDE21]">Showcase</span> <span class="text-[#089908]">Room</span></h2></div><div id="focusSlider" class="relative h-[500px] md:h-[580px] -mx-6"><div id="focusCards" class="absolute inset-0 flex items-center justify-center" style="perspective:1000px"></div><div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 bg-black/30 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 shadow-lg"><button id="focusPrev" class="p-2 hover:bg-white/10 rounded-full text-white transition-colors" aria-label="Previous card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button><div id="focusDots" class="flex gap-2"></div><button id="focusNext" class="p-2 hover:bg-white/10 rounded-full text-white transition-colors" aria-label="Next card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div></div></div></section>`;
+    }
+
+    function ContactSection() {
+      return `<section id="contact" class="relative py-28 px-6 bg-black overflow-hidden"><div class="absolute inset-x-0 -top-4 text-center pointer-events-none select-none font-black uppercase leading-none" style="font-size: clamp(4rem, 15vw, 15rem); color: rgba(255,255,255,0.04);">Contact</div><div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(8,153,8,0.14) 0%, rgba(0,0,0,0) 65%);"></div><div class="relative max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start"><div class="fade-left animate-on-scroll"><div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6"><span class="w-5 h-5 rounded-full bg-[#089908]/20 border border-[#089908] text-[#089908] flex items-center justify-center text-[10px]"><i class="fa-regular fa-envelope"></i></span><span class="text-xs font-black uppercase tracking-[0.2em] text-gray-300">Contact</span></div><h2 class="text-5xl md:text-6xl font-black tracking-tight text-white mb-4">Get in touch<span class="text-[#089908]">.</span></h2><p class="text-gray-400 mb-10 max-w-sm">Questions, bookings or features — if it's LEO SNOW, it starts here.</p><div class="space-y-4"><a href="mailto:leosnowbookings@gmail.com?subject=Inquiry%20from%20website" class="group flex items-center gap-4 bg-white/[0.03] border border-white/10 rounded-2xl p-4 hover:border-[#089908]/60 transition-all"><span class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0"><i class="fa-regular fa-envelope"></i></span><span class="flex-1 min-w-0"><span class="block font-black text-white">Email us</span><span class="block text-sm text-gray-400 truncate"><!-- TODO: real booking email -->leosnowbookings@gmail.com</span></span><span class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white shrink-0 group-hover:bg-[#089908] group-hover:text-black transition-colors"><i class="fa fa-arrow-right" style="transform: rotate(-45deg);"></i></span></a><a href="#music" class="group flex items-center gap-4 bg-white/[0.03] border border-white/10 rounded-2xl p-4 hover:border-[#089908]/60 transition-all"><span class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0"><i class="fa-solid fa-headphones"></i></span><span class="flex-1 min-w-0"><span class="block font-black text-white">Listen</span><span class="block text-sm text-gray-400">LEO SNOW on all platforms</span></span><span class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white shrink-0 group-hover:bg-[#089908] group-hover:text-black transition-colors"><i class="fa fa-arrow-right" style="transform: rotate(-45deg);"></i></span></a></div></div><form id="contactForm" class="fade-right animate-on-scroll bg-white/[0.03] border border-white/10 rounded-3xl p-4 md:p-5 space-y-3 backdrop-blur-sm"><input type="text" id="contactName" placeholder="Name" class="w-full bg-[#0d0d0d] border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 font-bold outline-none focus:border-[#089908] transition-colors"><input type="email" id="contactEmail" placeholder="Email" class="w-full bg-[#0d0d0d] border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 font-bold outline-none focus:border-[#089908] transition-colors"><textarea id="contactMessage" placeholder="Message" rows="8" class="w-full bg-[#0d0d0d] border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 font-bold outline-none focus:border-[#089908] transition-colors resize-none"></textarea><button type="submit" class="w-full bg-[#089908] text-black font-black uppercase tracking-wide rounded-xl py-4 hover:bg-[#FFDE21] transition-colors">Submit</button></form></div></section>`;
+    }
+
+    function Footer() { return `<footer class="py-20 px-6 bg-black text-white text-center"><div class="text-6xl font-black tracking-tighter italic mb-8">LEO SNOW</div><div class="flex justify-center gap-8 mb-8 font-black uppercase opacity-60"><a href="#" class="hover:text-[#089908]">Privacy</a><a href="#" class="hover:text-[#089908]">Terms</a><a href="#" class="hover:text-[#089908]">Contact</a></div><p class="font-bold opacity-30 uppercase tracking-[0.5em]">&copy; 2026 LEO SNOW WORLDWIDE</p></footer>`; }
+
+    // "Available On" streaming widget — fixed bottom-right, glass panel at 5% black
+    function AvailableOn() { const s = appData.socials; const platforms = [ { key: 'youtube', label: 'YouTube', icon: 'fa-brands fa-youtube' }, { key: 'soundcloud', label: 'SoundCloud', icon: 'fa-brands fa-soundcloud' }, { key: 'applemusic', label: 'Apple Music', icon: 'fa-brands fa-apple' }, { key: 'bandcamp', label: 'BandCamp', icon: 'fa-brands fa-bandcamp' } ]; return `<div class="fixed bottom-6 right-6 z-40 hidden md:block"><div class="backdrop-blur-md bg-black/5 border border-white/10 rounded-2xl px-6 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.35)]"><div class="w-8 h-0.5 bg-[#089908] mb-3"></div><p class="text-[10px] font-black uppercase tracking-[0.25em] text-white/80 mb-4">Available On</p><div class="flex flex-col gap-3">${platforms.map(p => `<a href="${escapeHtml(s[p.key] || '#')}" target="_blank" class="flex items-center gap-3 text-sm font-bold text-white/90 hover:text-[#089908] transition-colors"><i class="${p.icon} w-5 text-center"></i>${p.label}</a>`).join('')}</div></div></div>`; }
+
+    // Bio modal
+    function showBioModal(fullBio) {
+      const modalOverlay = document.createElement('div');
+      modalOverlay.className = 'bio-modal-overlay';
+      modalOverlay.innerHTML = `
+        <div class="bio-modal-container">
+          <div class="bio-modal-close"><i class="fa fa-times"></i></div>
+          <div class="bio-modal-content">
+            <p>${escapeHtml(fullBio).replace(/\n/g, '<br>')}</p>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modalOverlay);
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => modalOverlay.classList.add('active'), 10);
+      const closeModal = () => {
+        modalOverlay.classList.remove('active');
+        setTimeout(() => { modalOverlay.remove(); document.body.style.overflow = ''; }, 300);
+      };
+      modalOverlay.querySelector('.bio-modal-close').addEventListener('click', closeModal);
+      modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+    }
+
+    function renderApp() {
+      const root = document.getElementById('root');
+      root.innerHTML = `<div class="min-h-screen bg-[#089908] font-sans selection:bg-black selection:text-[#089908]">${Navbar()}<main>${Hero()}${AboutSection()}</div>${VideosSection()}${MusicSection()}${ShowsSection()}${GallerySection()}${ContactSection()}</main>${Footer()}${AvailableOn()}<div class="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div></div>`;
+      attachListeners();
+    }
+
+    // All event wiring happens HERE, exactly once per render (single attach point)
+    function attachListeners() {
+      const MERCHDesktop = document.getElementById('MERCHBtnDesktop');
+      const MERCHMobile = document.getElementById('MERCHBtnMobile');
+      if (MERCHDesktop) MERCHDesktop.addEventListener('click', showMERCHComingSoon);
+      if (MERCHMobile) MERCHMobile.addEventListener('click', showMERCHComingSoon);
+      const mobileBtn = document.getElementById('mobileMenuBtn');
+      const closeBtn = document.getElementById('closeMobileMenuBtn');
+      const overlay = document.getElementById('mobileMenuOverlay');
+      if (mobileBtn) mobileBtn.onclick = () => { overlay.classList.remove('hidden'); overlay.classList.add('open'); };
+      if (closeBtn) closeBtn.onclick = () => { overlay.classList.add('hidden'); overlay.classList.remove('open'); };
+      document.querySelectorAll('.mobile-nav-link').forEach(link => { link.onclick = () => { overlay.classList.add('hidden'); overlay.classList.remove('open'); }; });
+      document.getElementById('logo-home').onclick = () => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
+
+      document.querySelectorAll('.expandLinksBtn').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.getAttribute('data-id');
+          const linksDiv = document.getElementById('releaseLinks-' + id);
+          if (linksDiv) linksDiv.classList.toggle('hidden');
+        };
+      });
+
+      const viewAllReleasesBtn = document.querySelector('.viewAllReleasesBtn');
+      if (viewAllReleasesBtn) {
+        let expanded = false;
+        viewAllReleasesBtn.onclick = () => {
+          expanded = !expanded;
+          document.querySelectorAll('.releaseExtra').forEach(el => el.classList.toggle('hidden'));
+          const remaining = document.querySelectorAll('.releaseExtra:not(.hidden)').length;
+          viewAllReleasesBtn.textContent = expanded ? `Show Less Releases` : `Show More Releases (${remaining} more)`;
+        };
+      }
+      const viewAllShowsBtn = document.querySelector('.viewAllShowsBtn');
+      if (viewAllShowsBtn) {
+        let expanded = false;
+        viewAllShowsBtn.onclick = () => {
+          expanded = !expanded;
+          document.querySelectorAll('.showExtra').forEach(el => el.classList.toggle('hidden'));
+          const remaining = document.querySelectorAll('.showExtra:not(.hidden)').length;
+          viewAllShowsBtn.textContent = expanded ? `Show Less Events` : `Show More Events (${remaining} more)`;
+        };
+      }
+
+      document.querySelectorAll('.addEventBtn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          showAddEventModal({ date: btn.getAttribute('data-date'), venue: btn.getAttribute('data-venue'), city: btn.getAttribute('data-city') });
+        };
+      });
+
+      const readMoreBtn = document.getElementById('readMoreBioBtn');
+      if (readMoreBtn) readMoreBtn.addEventListener('click', () => showBioModal(appData.bio.text));
+
+      // Contact form — Supabase insert will be wired here later
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('contactName')?.value.trim();
+          const email = document.getElementById('contactEmail')?.value.trim();
+          const message = document.getElementById('contactMessage')?.value.trim();
+          if (!name || !email || !message) { showCoolToast('❌ Please fill all fields', 'error'); return; }
+          // TODO (Supabase): insert { name, email, message } into the messages table
+          showCoolToast('✨ Message sent to LEO SNOW! ✨');
+          contactForm.reset();
+        });
+      }
+
+      buildFocusSlider();
+      initMusicSection();
+      initScrollAnimations();
+      injectStructuredData();
+    }
+
+    // Global atmosphere effect: tap pops (run once)
+    function initGlobalEffects() { if (document.body.dataset.effectsInitialized === 'true') return; document.body.dataset.effectsInitialized = 'true'; document.addEventListener('pointerdown', handleTapEffect, { passive: true }); }
+
+    let tapEffectToggle = false;
+    function handleTapEffect(event) {
+      const bubble = document.createElement('div');
+      bubble.className = `tap-pop ${tapEffectToggle ? 'alt' : 'normal'}`;
+      tapEffectToggle = !tapEffectToggle;
+      bubble.style.left = `${event.clientX}px`;
+      bubble.style.top = `${event.clientY}px`;
+      bubble.style.opacity = '0';
+      bubble.innerHTML = '<i class="fa-solid fa-music"></i>';
+      document.body.appendChild(bubble);
+      for (let i = 0; i < 3; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'tap-spark';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 6 + Math.random() * 8;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        spark.style.left = `${event.clientX}px`;
+        spark.style.top = `${event.clientY}px`;
+        spark.style.setProperty('--dx', `${dx}px`);
+        spark.style.setProperty('--dy', `${dy}px`);
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 340);
+      }
+      setTimeout(() => bubble.remove(), 420);
+    }
+
+    // Hero → Story scroll zoom: the hero content approaches & fades, the hero photo dissolves,
+    // and the Story scales up from BEHIND the hero (a walk-forward transition, no scroll-down)
+    function initHeroZoom() {
+      const stage = document.getElementById('heroStage');
+      const hero = document.getElementById('home');
+      const about = document.getElementById('about');
+      if (!stage || !hero || !about) return;
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const total = stage.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        const p = Math.min(1, Math.max(0, window.scrollY / total));
+        hero.querySelectorAll('[data-zoom]').forEach(el => {
+          const speed = parseFloat(el.getAttribute('data-zoom')) || 1;
+          el.style.transform = `scale(${1 + p * 0.85 * speed})`;
+          el.style.opacity = String(Math.max(0, 1 - p * 1.4));
+        });
+        hero.querySelectorAll('[data-zoombg]').forEach(el => {
+          el.style.transform = `scale(${1 + p * 0.18})`;
+          el.style.opacity = String(Math.max(0, 1 - p * 1.15));
+        });
+        // The Story approaches from behind: deeper + invisible → full screen
+        const p2 = Math.min(1, Math.max(0, (p - 0.3) / 0.7));
+        about.style.opacity = String(p2);
+        about.style.transform = `scale(${0.88 + 0.12 * p2})`;
+        about.style.pointerEvents = p2 > 0.6 ? 'auto' : 'none';
+        hero.style.pointerEvents = p > 0.5 ? 'none' : 'auto';
+      };
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      update();
+    }
+
+    // Scroll-aware header: solid bar after leaving the top + scroll-spy for the active section
+    function initHeader() {
+      const header = document.getElementById('siteHeader');
+      if (!header) return;
+      const onScroll = () => header.classList.toggle('header-solid', window.scrollY > 40);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      const ids = { about: 'ABOUT', videos: 'VIDEOS', music: 'MUSIC', shows: 'EVENTS', gallery: 'VISUALS', contact: 'BOOKING' };
+      const links = {};
+      header.querySelectorAll('[data-nav]').forEach(a => { links[a.getAttribute('data-nav')] = a; });
+      const setActive = (id) => {
+        Object.values(links).forEach(a => a.classList.remove('nav-active'));
+        if (links[ids[id]]) links[ids[id]].classList.add('nav-active');
+      };
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach(en => { if (en.isIntersecting) setActive(en.target.id); });
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      Object.keys(ids).forEach(id => { const s = document.getElementById(id); if (s) spy.observe(s); });
+      setActive('about');
+    }
+
+    function initialize() {
+      renderApp();
+      initGlobalEffects();
+      initHeroZoom();
+      initHeader();
+      // Popup ad shows 5s after load — only when enabled in the (future) admin
+      setTimeout(() => { if (appData && appData.popupAd && appData.popupAd.enabled && !popupShown) { showPopupAd(); popupShown = true; } }, 5000);
+    }
+    initialize();
+  </script>
+</body>
+</html>
