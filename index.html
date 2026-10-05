@@ -152,6 +152,17 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { scrollbar-width: none; }
 
+    /* Showcase detail: 3D flip expand */
+    #showcaseDetail { display: none; opacity: 0; transition: opacity 0.35s ease; }
+    #showcaseDetail.flex { display: flex; }
+    #showcaseDetail.open { opacity: 1; }
+    .detail-card { transform: rotateY(70deg) scale(0.92); opacity: 0; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.22, 0.9, 0.32, 1), opacity 0.4s ease; }
+    #showcaseDetail.open .detail-card { transform: rotateY(0deg) scale(1); opacity: 1; }
+    .detail-card.swap-out { animation: detailSwapOut 0.26s ease forwards; pointer-events: none; }
+    .detail-card.swap-in { animation: detailSwapIn 0.45s cubic-bezier(0.22, 0.9, 0.32, 1); pointer-events: none; }
+    @keyframes detailSwapOut { to { transform: rotateY(-32deg) scale(0.95); opacity: 0.2; } }
+    @keyframes detailSwapIn { from { transform: rotateY(32deg) scale(0.95); opacity: 0.2; } to { transform: rotateY(0deg) scale(1); opacity: 1; } }
+
     /* Bio modal */
     .bio-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
     .bio-modal-overlay.active { opacity: 1; visibility: visible; }
@@ -220,9 +231,9 @@
         { id: 105, date: "2027-02-14", venue: "Cold Room Sessions", city: "Berlin, Germany", ticket: "https://example.com/tickets" }
       ],
       gallery: [
-        { id: 201, url: "pics/hero.png", title: "On Tour" },
-        { id: 202, url: "pics/kente.jpg", title: "Kente Culture" },
-        { id: 203, url: "pics/mobilehero.png", title: "Backstage" }
+        { id: 201, url: "pics/hero.png", title: "My Story", about: true },
+        { id: 202, url: "pics/kente.jpg", title: "Kente Culture", desc: "Wrapped in the colors of home — every thread of kente carries where we come from and where we're going." },
+        { id: 203, url: "pics/mobilehero.png", title: "Backstage", desc: "Behind the scenes before the storm — the quiet moments right before the stage comes alive." }
       ],
       socials: { tiktok: "https://tiktok.com", instagram: "https://instagram.com", spotify: "https://spotify.com", audiomack: "https://audiomack.com", facebook: "https://facebook.com", threads: "https://threads.net", snapchat: "https://snapchat.com", twitter: "https://twitter.com", youtube: "https://youtube.com", soundcloud: "https://soundcloud.com", applemusic: "https://music.apple.com", bandcamp: "https://bandcamp.com" },
       videos: [],
@@ -253,7 +264,7 @@
         const card = document.createElement('div');
         card.className = 'focus-card';
         card.innerHTML = `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(title)}" loading="lazy"><div class="focus-card-content"><h3 class="focus-card-title">${escapeHtml(title)}</h3><div class="focus-card-number">${numStr} - ${totalStr}</div></div>`;
-        card.addEventListener('click', () => { if (focusIndex !== index) { focusIndex = index; updateFocusSlider(); } else { openFullscreen(item.url); } });
+        card.addEventListener('click', () => { if (focusIndex !== index) { focusIndex = index; updateFocusSlider(); } else { openShowcaseDetail(focusIndex); } });
         wrap.appendChild(card);
       });
       const prev = document.getElementById('focusPrev'), next = document.getElementById('focusNext');
@@ -388,35 +399,35 @@
 
     function StoryShowcaseSection() {
       const galleryItems = appData.gallery || [];
-      const showcase = galleryItems.length === 0
-        ? `<div class="empty-message">📸 No images in gallery yet.</div>`
-        : `<div id="focusSlider" class="relative h-[500px] md:h-[580px] -mx-6"><div id="focusCards" class="absolute inset-0 flex items-center justify-center" style="perspective:1000px"></div><div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 bg-black/30 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 shadow-lg"><button id="focusPrev" class="p-2 hover:bg-white/10 rounded-full text-white transition-colors" aria-label="Previous card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button><div id="focusDots" class="flex gap-2"></div><button id="focusNext" class="p-2 hover:bg-white/10 rounded-full text-white transition-colors" aria-label="Next card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div></div>`;
+      const showcase = galleryItems.length === 0 ? `<div class="empty-message">📸 No images in gallery yet.</div>` : `<div id="focusSlider" class="relative h-[500px] md:h-[580px] -mx-6"><div id="focusCards" class="absolute inset-0 flex items-center justify-center" style="perspective:1000px"></div><div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 bg-black/30 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 shadow-lg"><button id="focusPrev" class="p-2 hover:bg-white/10 rounded-full text-white transition-colors" aria-label="Previous card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button><div id="focusDots" class="flex gap-2"></div><button id="focusNext" class="p-2 hover:bg-white/10 rounded-full text-white transition-colors" aria-label="Next card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div></div>`;
+      const detail = galleryItems.length === 0 ? "" : `
+        <div id="showcaseDetail" class="fixed inset-0 z-[2000] items-center justify-center p-4" style="perspective: 1600px;">
+          <div class="absolute inset-0 bg-black/85 backdrop-blur-md" data-close-detail></div>
+          <div id="detailCard" class="detail-card relative w-full max-w-5xl bg-[#0d0d0d] border border-white/10 rounded-3xl overflow-hidden grid md:grid-cols-2">
+            <div class="relative min-h-[40vh] md:min-h-[70vh]">
+              <img id="detailImg" src="${escapeHtml(galleryItems[0].url)}" alt="" class="absolute inset-0 w-full h-full object-cover">
+              <span id="detailNum" class="absolute top-4 left-4 bg-black/60 border border-white/30 text-white text-xs font-black tracking-[0.15em] rounded-full px-3 py-1">01 - ${String(galleryItems.length).padStart(2, '0')}</span>
+            </div>
+            <div class="p-8 md:p-12 flex flex-col justify-center">
+              <div class="flex items-center gap-4 mb-1"><span class="w-10 h-0.5 bg-[#089908] shrink-0"></span><h2 id="detailTitle" class="text-2xl md:text-4xl font-black uppercase italic text-[#089908]">I'm Leo Snow.</h2></div>
+              <h3 id="detailSub" class="text-2xl md:text-4xl font-black uppercase text-white mb-5">Afrobeats Artist</h3>
+              <p id="detailDesc" class="text-gray-300 leading-relaxed mb-8">${escapeHtml(appData.bio.text)}</p>
+              <button id="detailAboutBtn" class="group self-start inline-flex items-center gap-4 bg-transparent border border-white/20 rounded-full pl-6 pr-1.5 py-1.5 font-black uppercase text-sm tracking-wide text-white hover:border-[#089908] transition-all">More About Me<span class="w-10 h-10 rounded-full bg-[#089908] text-black flex items-center justify-center group-hover:translate-x-1 transition-transform"><i class="fa fa-arrow-right"></i></span></button>
+            </div>
+            <button id="detailClose" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#089908] hover:text-black transition-colors" aria-label="Close"><i class="fa fa-times"></i></button>
+            <button id="detailPrev" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#089908] hover:text-black transition-colors" aria-label="Previous"><i class="fa fa-chevron-left"></i></button>
+            <button id="detailNext" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#089908] hover:text-black transition-colors" aria-label="Next"><i class="fa fa-chevron-right"></i></button>
+          </div>
+        </div>`;
       return `
         <section id="about" class="py-24 px-6 bg-black overflow-hidden">
           <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-              <div class="relative fade-left animate-on-scroll mx-auto w-full max-w-md md:max-w-none">
-                <div class="absolute -top-4 -left-4 w-24 h-24 md:w-32 md:h-32 bg-[#089908]"></div>
-                <img src="${appData.bio.photo}" alt="The Story of LEO SNOW - artist portrait" class="relative z-10 w-full aspect-[4/5] object-cover shadow-2xl" loading="lazy">
-              </div>
-              <div class="relative z-10 fade-right animate-on-scroll">
-                <div class="flex items-center gap-4 mb-1">
-                  <span class="w-10 h-0.5 bg-[#089908] shrink-0"></span>
-                  <h2 class="text-3xl md:text-5xl font-black uppercase italic text-[#089908]">I'm Leo Snow.</h2>
-                </div>
-                <h3 class="text-3xl md:text-5xl font-black uppercase text-white mb-6">Afrobeats Artist</h3>
-                <p class="text-gray-300 leading-relaxed mb-8 max-w-lg">${escapeHtml(appData.bio.text)}</p>
-                <button id="readMoreBioBtn" class="group inline-flex items-center gap-4 bg-transparent border border-white/20 rounded-full pl-6 pr-1.5 py-1.5 font-black uppercase text-sm tracking-wide text-white hover:border-[#089908] transition-all">
-                  More About Me
-                  <span class="w-10 h-10 rounded-full bg-[#089908] text-black flex items-center justify-center group-hover:translate-x-1 transition-transform"><i class="fa fa-arrow-right"></i></span>
-                </button>
-              </div>
-            </div>
             <div id="gallery" class="mt-28">
               <div class="fade-left"><h2 class="font-black uppercase tracking-tighter mb-12" style="border-left: 6px solid #eb0905; padding-left: 1.2rem; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1;"><span class="text-[#FFDE21]">Showcase</span> <span class="text-[#089908]">Room</span></h2></div>
               ${showcase}
             </div>
           </div>
+          ${detail}
         </section>
       `;
     }
@@ -434,6 +445,64 @@
         return `<section id="music" class="relative py-24 px-6 bg-black"><div class="max-w-7xl mx-auto"><div class="empty-message">🎵 No releases yet. Check back soon.</div></div></section>`;
       }
       return `<section id="music" class="relative py-24 px-6 bg-black overflow-hidden"><div class="pointer-events-none select-none absolute inset-x-0 bottom-0 text-center font-black uppercase leading-none text-white/[0.06]" style="font-size: clamp(4.5rem, 14vw, 12rem);">Music</div><div class="relative max-w-7xl mx-auto"><div class="hidden lg:grid grid-cols-4 gap-5">${releases.map((r, i) => card(r, i, i >= visibleCount ? "release-extra lg:hidden" : "")).join("")}</div><div class="lg:hidden"><div id="musicScroller" class="no-scrollbar flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-6 px-6 pb-2" style="-webkit-overflow-scrolling: touch;">${releases.map((r, i) => card(r, i, "shrink-0 w-[78vw] max-w-[320px] snap-center")).join("")}</div><div id="musicDots" class="flex justify-center gap-2 mt-5"></div></div>${hasMore ? `<div class="text-center mt-12"><button id="viewAllReleases" class="bg-black border border-white/25 text-white text-xs font-black uppercase tracking-[0.25em] px-8 py-4 hover:border-[#089908] transition-colors">Listen To Our Full Playlist</button></div>` : `<div class="text-center mt-12"><a href="${escapeHtml((releases.find(r => r.spotify) || { spotify: appData.socials.spotify }).spotify)}" target="_blank" class="inline-block bg-black border border-white/25 text-white text-xs font-black uppercase tracking-[0.25em] px-8 py-4 hover:border-[#089908] transition-colors">Listen To Our Full Playlist</a></div>`}</div></section>`;
+    }
+
+    // Showcase detail: 3D flip expand with the About story, walk between images
+    let detailIndex = 0;
+    function openShowcaseDetail(index) {
+      const items = appData.gallery || [];
+      if (!items.length) return;
+      detailIndex = index;
+      updateDetailMeta();
+      const overlay = document.getElementById('showcaseDetail');
+      overlay.classList.add('flex');
+      requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('open')));
+      document.body.style.overflow = 'hidden';
+    }
+    function closeShowcaseDetail() {
+      const overlay = document.getElementById('showcaseDetail');
+      overlay.classList.remove('open');
+      setTimeout(() => { overlay.classList.remove('flex'); document.body.style.overflow = ''; }, 380);
+    }
+    function updateDetailMeta() {
+      const items = appData.gallery || [];
+      const it = items[detailIndex] || {};
+      const isAbout = !!it.about;
+      document.getElementById('detailImg').src = it.url;
+      document.getElementById('detailNum').textContent = String(detailIndex + 1).padStart(2, '0') + ' - ' + String(items.length).padStart(2, '0');
+      document.getElementById('detailTitle').textContent = isAbout ? "I'm Leo Snow." : (it.title || 'Untitled');
+      document.getElementById('detailSub').textContent = isAbout ? 'Afrobeats Artist' : '';
+      document.getElementById('detailSub').style.display = isAbout ? '' : 'none';
+      document.getElementById('detailDesc').textContent = isAbout ? appData.bio.text : (it.desc || '');
+      document.getElementById('detailAboutBtn').style.display = isAbout ? '' : 'none';
+    }
+    function stepShowcase(dir) {
+      const items = appData.gallery || [];
+      if (!items.length) return;
+      detailIndex = (detailIndex + dir + items.length) % items.length;
+      const card = document.getElementById('detailCard');
+      card.classList.add('swap-out');
+      setTimeout(() => {
+        updateDetailMeta();
+        card.classList.remove('swap-out');
+        card.classList.add('swap-in');
+        setTimeout(() => card.classList.remove('swap-in'), 460);
+      }, 270);
+    }
+    function initShowcaseDetail() {
+      const overlay = document.getElementById('showcaseDetail');
+      if (!overlay) return;
+      overlay.querySelector('[data-close-detail]').addEventListener('click', closeShowcaseDetail);
+      document.getElementById('detailClose').addEventListener('click', closeShowcaseDetail);
+      document.getElementById('detailPrev').addEventListener('click', () => stepShowcase(-1));
+      document.getElementById('detailNext').addEventListener('click', () => stepShowcase(1));
+      document.getElementById('detailAboutBtn').addEventListener('click', () => showBioModal(appData.bio.text));
+      document.addEventListener('keydown', (e) => {
+        if (!overlay.classList.contains('open')) return;
+        if (e.key === 'Escape') closeShowcaseDetail();
+        if (e.key === 'ArrowRight') stepShowcase(1);
+        if (e.key === 'ArrowLeft') stepShowcase(-1);
+      });
     }
 
     function initMusicSection() {
@@ -532,7 +601,7 @@
 
     function renderApp() {
       const root = document.getElementById('root');
-      root.innerHTML = `<div class="min-h-screen bg-[#089908] font-sans selection:bg-black selection:text-[#089908]">${Navbar()}<main>${Hero()}${VideosSection()}</div>${MusicSection()}${ShowsSection()}${ContactSection()}${StoryShowcaseSection()}</main>${Footer()}${AvailableOn()}<div class="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div></div>`;
+      root.innerHTML = `<div class="min-h-screen bg-[#089908] font-sans selection:bg-black selection:text-[#089908]">${Navbar()}<main>${Hero()}${VideosSection()}</div>${MusicSection()}${ShowsSection()}${StoryShowcaseSection()}${ContactSection()}</main>${Footer()}${AvailableOn()}<div class="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div></div>`;
       attachListeners();
     }
 
@@ -609,6 +678,7 @@
 
       buildFocusSlider();
       initMusicSection();
+      initShowcaseDetail();
       initScrollAnimations();
       injectStructuredData();
     }
