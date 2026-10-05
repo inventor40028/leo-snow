@@ -751,12 +751,12 @@
     function initHeader() {
       const header = document.getElementById('siteHeader');
       if (!header) return;
-      const onScroll = () => header.classList.toggle('header-solid', window.scrollY > 40);
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
       const ids = { about: 'ABOUT', videos: 'VIDEOS', music: 'MUSIC', shows: 'EVENTS', gallery: 'VISUALS', contact: 'BOOKING' };
       const links = {};
       header.querySelectorAll('[data-nav]').forEach(a => { links[a.getAttribute('data-nav')] = a; });
+      const onScroll = () => { header.classList.toggle('header-solid', window.scrollY > 40); if (window.scrollY <= 40) { Object.values(links).forEach(a => a.classList.remove('nav-active')); } };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
       const setActive = (id) => {
         Object.values(links).forEach(a => a.classList.remove('nav-active'));
         if (links[ids[id]]) links[ids[id]].classList.add('nav-active');
