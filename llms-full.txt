@@ -1,0 +1,50 @@
+# LEO SNOW — Full Site Information
+
+## Identity
+
+- Name: LEO SNOW
+- Taglines: "Ghana Boy With A Different Flow", "The Storm From Africa", "The global takeover begins here"
+- Genre: Afrobeats, Alté, Hip-Hop, Experimental
+- Origin: Ghana
+- Booking: leosnowbookings@gmail.com
+
+## Biography
+
+Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.
+
+## Site structure
+
+The official website (https://inventor40028.github.io/leo-snow/) is a single-page dark-themed experience built around a green (#089908) accent with yellow (#FFDE21) and red (#eb0905) highlights. Scrolling from the hero triggers a cinematic zoom into the content.
+
+### Hero
+Full-screen photography per device, the LEO SNOW logo, the boxed tagline "Ghana Boy With / A Different Flow" and a Stream Latest button that jumps to the music section.
+
+### Videos
+Up to three official music videos embedded from YouTube, with a link to the artist's channel.
+
+### Music (Releases)
+Cover-art cards, each labeled with its type (Single, EP, Mixtape, Album) and year. A "Stream" toggle on each card reveals the platforms the release is available on: Spotify, Audiomack, Boomplay, Deezer, Apple Music, YouTube Music and custom links. A "Listen To Our Full Playlist" button links to streaming.
+
+### Events (Shows)
+White cards over a full-bleed event photograph: venue, date, city, a Tickets button when tickets are available, and a calendar icon that adds the show to Google or Apple Calendar as a reminder.
+
+### About / Showcase Room
+The artist's story ("I'm Leo Snow. — Afrobeats Artist") paired with a fan of showcase images. Clicking the focused card flips it open in 3D to reveal the image alongside its story; the first image carries the artist's own story. Arrow navigation walks through the images.
+
+### Booking
+A "Get in touch" panel with the booking email and a Name / Email / Message form. Submissions are stored in the site's Supabase backend.
+
+## Platforms
+
+- YouTube: https://youtube.com
+- SoundCloud: https://soundcloud.com
+- Apple Music: https://music.apple.com
+- BandCamp: https://bandcamp.com
+- Instagram, TikTok, X (Twitter), Facebook, Threads, Snapchat: linked from the site header and hero
+
+## Technical notes
+
+- Static single-page site hosted on GitHub Pages
+- Content served from a Supabase backend (site_content + messages tables) with realtime updates
+- Structured data (JSON-LD MusicGroup + Events) injected at runtime
+- Admin/management interface is not publicly linked

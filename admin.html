@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>LEO SNOW — Control Room</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    .field { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.12); color: #fff; border-radius: 0.75rem; padding: 0.8rem 1rem; width: 100%; font-weight: 700; outline: none; transition: border-color 0.2s; }
+    .field:focus { border-color: #089908; }
+    .field::placeholder { color: #666; font-weight: 700; }
+    .btn { background: #089908; color: #000; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 0.75rem; padding: 0.7rem 1.2rem; cursor: pointer; transition: all 0.2s; }
+    .btn:hover { background: #FFDE21; }
+    .btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); font-weight: 700; border-radius: 0.75rem; padding: 0.5rem 1rem; cursor: pointer; transition: all 0.2s; }
+    .btn-ghost:hover { border-color: #089908; color: #089908; }
+    .tab-btn { width: 100%; text-align: left; padding: 1rem 1.2rem; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; color: #bbb; border-left: 4px solid transparent; cursor: pointer; transition: all 0.2s; background: transparent; }
+    .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.04); }
+    .tab-btn.active { color: #fff; background: rgba(8,153,8,0.12); border-left-color: #089908; }
+    .row-card { background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); opacity: 0; transition: all 0.3s ease; background: #089908; color: #000; font-weight: 900; padding: 12px 26px; border-radius: 999px; z-index: 9999; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.error { background: #eb0905; color: #fff; }
+    .thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 0.5rem; background: #1a1a1a; }
+    .icon-btn { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; background: rgba(255,255,255,0.06); color: #ccc; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+    .icon-btn:hover { color: #fff; border-color: rgba(255,255,255,0.25); }
+    .icon-btn.danger:hover { color: #eb0905; border-color: #eb0905; }
+    .icon-btn.green:hover { color: #089908; border-color: #089908; }
+    .upload-drop { border: 2px dashed rgba(255,255,255,0.2); border-radius: 0.75rem; padding: 1rem; text-align: center; color: #888; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+    .upload-drop:hover { border-color: #089908; color: #fff; }
+  </style>
+</head>
+<body class="bg-black text-white antialiased">
+  <div id="root"></div>
+  <div id="toast" class="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://cwotoefcpjehfhxidbaw.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b3RvZWZjcGplaGZoeGlkYmF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjE2MjEsImV4cCI6MjEwNjc5NzYyMX0.3aPe4qed65H27PiVHfL1kvb_Vj_QIsH69chNbAp2ZDw";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const BASE = {
+      bio: { text: "", photo: "" },
+      releases: [], shows: [], gallery: [], videos: [],
+      socials: { tiktok: "", instagram: "", spotify: "", audiomack: "", facebook: "", threads: "", snapchat: "", twitter: "", youtube: "", soundcloud: "", applemusic: "", bandcamp: "" }
+    };
+    let user = null, appData = null, msgs = [], tab = "identity", editIdx = null, busy = false;
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+    function toast(msg, type = "ok") { const t = $("toast"); t.textContent = msg; t.className = "toast show" + (type === "error" ? " error" : ""); setTimeout(() => t.className = "toast" + (type === "error" ? " error" : ""), 2600); }
+    async function guard(fn, okMsg) { if (busy) return; busy = true; try { await fn(); if (okMsg) toast(okMsg); } catch (e) { toast("❌ " + e.message, "error"); } busy = false; }
+
+    async function loadData() {
+      const { data, error } = await sb.from("site_content").select("data").eq("id", 1).maybeSingle();
+      if (error) throw error;
+      appData = JSON.parse(JSON.stringify(BASE));
+      if (data && data.data) { for (const k of Object.keys(BASE)) { if (data.data[k] !== undefined) appData[k] = data.data[k]; } }
+      const m = await sb.from("messages").select("*").order("created_at", { ascending: false });
+      msgs = m.data || [];
+    }
+    async function save() {
+      const { error } = await sb.from("site_content").update({ data: appData }).eq("id", 1);
+      if (error) throw error;
+    }
+    async function uploadImage(file, folder) {
+      if (!file) return null;
+      if (file.size > 4 * 1024 * 1024) throw new Error("Image too large (max 4MB — compress it first)");
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const path = folder + "/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
+      const { error } = await sb.storage.from("media").upload(path, file, { contentType: file.type });
+      if (error) throw error;
+      return SUPABASE_URL + "/storage/v1/object/public/media/" + path;
+    }
+
+    const TABS = [["identity", "📝 Identity"], ["music", "🎵 Music"], ["events", "🎫 Events"], ["showcase", "🖼️ Showcase"], ["videos", "📹 Videos"], ["socials", "🌐 Socials"], ["messages", "📬 Messages"]];
+
+    function render() {
+      const root = $("root");
+      if (!user) {
+        root.innerHTML = `<div class="min-h-screen flex items-center justify-center p-6 bg-[#089908]"><div class="w-full max-w-md bg-black p-10 border-4 border-white"><h1 class="text-3xl font-black tracking-tight text-white mb-1">LEO SNOW</h1><p class="text-white/40 text-xs font-black uppercase tracking-[0.3em] mb-8">Control Room</p><form id="loginForm" class="space-y-5"><input id="email" type="email" placeholder="EMAIL" class="field"><input id="password" type="password" placeholder="PASSWORD" class="field"><button class="btn w-full py-4">Sign In →</button></form><p class="mt-6 text-white/30 text-[11px] font-bold leading-relaxed">First time? Create your login in Supabase Dashboard → Authentication → Users → Add user (auto-confirm).<br><a href="index.html" class="text-white/50 hover:text-white">← Back to site</a></p></div></div>`;
+        $("loginForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await guard(async () => {
+            const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("password").value });
+            if (error) throw error;
+          }, "Welcome back");
+        });
+        return;
+      }
+      const unread = msgs.filter(m => !m.read).length;
+      root.innerHTML = `<div class="min-h-screen flex flex-col lg:flex-row"><aside class="lg:w-64 shrink-0 border-b lg:border-b-0 lg:border-r border-white/5 p-5"><div class="flex items-center justify-between mb-8"><div><p class="text-lg font-black tracking-widest">LEO SNOW</p><p class="text-[10px] font-black uppercase tracking-[0.3em] text-[#089908]">Control Room</p></div></div><div class="flex lg:flex-col gap-2 overflow-x-auto">${TABS.map(([id, label]) => `<button class="tab-btn ${tab === id ? "active" : ""}" data-tab="${id}">${label}${id === "messages" && unread ? ` <span class="ml-1 bg-[#089908] text-black rounded-full px-2 py-0.5 text-[10px]">${unread}</span>` : ""}</button>`).join("")}</div><div class="mt-8 space-y-2"><a href="index.html" target="_blank" class="block text-center text-xs font-black uppercase tracking-widest text-white/60 hover:text-white py-2 border border-white/10 rounded-lg transition-colors">👁️ View Site</a><button id="logoutBtn" class="w-full text-xs font-black uppercase tracking-widest text-red-400/80 hover:text-red-400 py-2 border border-red-400/20 rounded-lg transition-colors">🚪 Sign Out</button></div></aside><main class="flex-1 p-5 md:p-10 overflow-x-hidden"><div id="panel"></div></main></div>`;
+      root.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => { tab = b.dataset.tab; editIdx = null; render(); }));
+      $("logoutBtn").addEventListener("click", async () => { await sb.auth.signOut(); });
+      renderPanel();
+    }
+
+    function renderPanel() {
+      const p = $("panel");
+      if (tab === "identity") {
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-6 border-l-4 border-[#089908] pl-4">Identity</h2><div class="space-y-5 max-w-2xl"><div><label class="text-[10px] font-black uppercase tracking-widest text-white/40 block mb-2">Bio / Story</label><textarea id="bioText" rows="7" class="field">${esc(appData.bio.text)}</textarea></div><div><label class="text-[10px] font-black uppercase tracking-widest text-white/40 block mb-2">Portrait photo</label><div class="flex gap-3 items-center"><img src="${esc(appData.bio.photo)}" class="thumb" onerror="this.style.opacity=0.2"><input id="bioPhoto" class="field flex-1" value="${esc(appData.bio.photo)}"><label class="upload-drop shrink-0">Upload<input type="file" accept="image/*" class="hidden" data-folder="identity" data-target="bioPhoto"></label></div></div><button id="saveIdentity" class="btn">Save →</button></div>`;
+        $("saveIdentity").addEventListener("click", () => guard(async () => { appData.bio.text = $("bioText").value; appData.bio.photo = $("bioPhoto").value.trim(); await save(); renderPanel(); }, "Identity saved"));
+      }
+      if (tab === "music") {
+        const editing = editIdx !== null && appData.releases[editIdx] ? appData.releases[editIdx] : null;
+        const r = editing || { title: "", year: "", type: "Single", art: "", spotify: "", audiomack: "", boomplay: "", deezer: "", apple: "", youtubemusic: "", custom: "" };
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-6 border-l-4 border-[#089908] pl-4">Music</h2><div class="row-card max-w-2xl space-y-4 mb-8"><p class="text-[10px] font-black uppercase tracking-widest text-[#089908]">${editing ? "Editing: " + esc(r.title) : "Add a release"}</p><div class="grid grid-cols-2 gap-3"><input id="rTitle" class="field" placeholder="Title" value="${esc(r.title)}"><input id="rYear" class="field" placeholder="Year" value="${esc(r.year)}"><select id="rType" class="field"><option${r.type === "Single" ? " selected" : ""}>Single</option><option${r.type === "EP" ? " selected" : ""}>EP</option><option${r.type === "Mixtape" ? " selected" : ""}>Mixtape</option><option${r.type === "Album" ? " selected" : ""}>Album</option></select><div class="flex gap-2"><input id="rArt" class="field flex-1" placeholder="Cover image" value="${esc(r.art)}"><label class="upload-drop shrink-0 self-stretch flex flex-col justify-center">Upload<input type="file" accept="image/*" class="hidden" data-folder="covers" data-target="rArt"></label>${r.art ? `<img src="${esc(r.art)}" class="thumb self-stretch" onerror="this.style.opacity=0.2">` : ""}</div></div><div class="grid grid-cols-2 gap-3">${[["rSpotify", "spotify", "Spotify"], ["rAudiomack", "audiomack", "Audiomack"], ["rBoomplay", "boomplay", "Boomplay"], ["rDeezer", "deezer", "Deezer"], ["rApple", "apple", "Apple Music"], ["rYtMusic", "youtubemusic", "YouTube Music"], ["rCustom", "custom", "Other / Website"]].map(([id, key, label]) => `<input id="${id}" class="field" placeholder="${label} link" value="${esc(r[key] || "")}">`).join("")}</div><div class="flex gap-3">${editing ? `<button id="cancelEdit" class="btn-ghost">Cancel</button>` : ""}<button id="saveRelease" class="btn flex-1">${editing ? "Save changes" : "+ Add release"}</button></div></div><div class="space-y-3 max-w-2xl">${appData.releases.map((rel, i) => `<div class="row-card flex items-center gap-4"><img src="${esc(rel.art)}" class="thumb" onerror="this.style.opacity=0.2"><div class="flex-1 min-w-0"><p class="font-black uppercase text-sm">${esc(rel.title)}</p><p class="text-xs text-gray-500">${esc(rel.type)} · ${esc(rel.year)}</p></div><div class="flex gap-1.5"><button class="icon-btn green" data-edit="${i}" title="Edit"><i class="fa fa-pen"></i></button><button class="icon-btn green" data-up="${i}" title="Move up"><i class="fa fa-arrow-up"></i></button><button class="icon-btn green" data-down="${i}" title="Move down"><i class="fa fa-arrow-down"></i></button><button class="icon-btn danger" data-del="${i}" title="Delete"><i class="fa fa-trash"></i></button></div></div>`).join("") || '<p class="text-white/30 text-sm">No releases yet — add the first one above.</p>'}</div>`;
+        const readForm = () => ({ title: $("rTitle").value.trim(), year: $("rYear").value.trim(), type: $("rType").value, art: $("rArt").value.trim(), spotify: $("rSpotify").value.trim(), audiomack: $("rAudiomack").value.trim(), boomplay: $("rBoomplay").value.trim(), deezer: $("rDeezer").value.trim(), apple: $("rApple").value.trim(), youtubemusic: $("rYtMusic").value.trim(), custom: $("rCustom").value.trim() });
+        $("saveRelease").addEventListener("click", () => guard(async () => {
+          const d = readForm();
+          if (!d.title || !d.year) throw new Error("Title and year are required");
+          if (editing) appData.releases[editIdx] = d; else appData.releases.unshift(d);
+          editIdx = null; await save(); renderPanel();
+        }, editing ? "Release updated" : "Release added"));
+        const c = $("cancelEdit"); if (c) c.addEventListener("click", () => { editIdx = null; renderPanel(); });
+        p.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => { editIdx = +b.dataset.edit; renderPanel(); }));
+        p.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => guard(async () => { const i = +b.dataset.up; if (i > 0) { [appData.releases[i - 1], appData.releases[i]] = [appData.releases[i], appData.releases[i - 1]]; await save(); renderPanel(); } })));
+        p.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => guard(async () => { const i = +b.dataset.down; if (i < appData.releases.length - 1) { [appData.releases[i + 1], appData.releases[i]] = [appData.releases[i], appData.releases[i + 1]]; await save(); renderPanel(); } })));
+        p.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => guard(async () => { if (!confirm("Delete this release?")) return; appData.releases.splice(+b.dataset.del, 1); editIdx = null; await save(); renderPanel(); }, "Release deleted")));
+      }
+      if (tab === "events") {
+        const editing = editIdx !== null && appData.shows[editIdx] ? appData.shows[editIdx] : null;
+        const s = editing || { date: "", venue: "", city: "", ticket: "" };
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-6 border-l-4 border-[#089908] pl-4">Events</h2><div class="row-card max-w-2xl space-y-4 mb-8"><p class="text-[10px] font-black uppercase tracking-widest text-[#089908]">${editing ? "Editing: " + esc(s.venue) : "Add an event"}</p><div class="grid grid-cols-2 gap-3"><input id="eDate" type="date" class="field" value="${esc(s.date)}"><input id="eVenue" class="field" placeholder="Venue" value="${esc(s.venue)}"><input id="eCity" class="field" placeholder="City, Country" value="${esc(s.city)}"><input id="eTicket" class="field" placeholder="Ticket link (optional)" value="${esc(s.ticket || "")}"></div><div class="flex gap-3">${editing ? `<button id="cancelEdit" class="btn-ghost">Cancel</button>` : ""}<button id="saveEvent" class="btn flex-1">${editing ? "Save changes" : "+ Add event"}</button></div></div><div class="space-y-3 max-w-2xl">${appData.shows.map((sh, i) => `<div class="row-card flex items-center gap-4"><div class="flex-1 min-w-0"><p class="font-black uppercase text-sm">${esc(sh.venue)}</p><p class="text-xs text-gray-500">${esc(sh.date)} · ${esc(sh.city)}</p></div><div class="flex gap-1.5"><button class="icon-btn green" data-edit="${i}"><i class="fa fa-pen"></i></button><button class="icon-btn green" data-up="${i}"><i class="fa fa-arrow-up"></i></button><button class="icon-btn green" data-down="${i}"><i class="fa fa-arrow-down"></i></button><button class="icon-btn danger" data-del="${i}"><i class="fa fa-trash"></i></button></div></div>`).join("") || '<p class="text-white/30 text-sm">No events yet.</p>'}</div>`;
+        $("saveEvent").addEventListener("click", () => guard(async () => {
+          const d = { date: $("eDate").value, venue: $("eVenue").value.trim(), city: $("eCity").value.trim(), ticket: $("eTicket").value.trim() };
+          if (!d.date || !d.venue) throw new Error("Date and venue are required");
+          if (editing) appData.shows[editIdx] = d; else appData.shows.push(d);
+          editIdx = null; await save(); renderPanel();
+        }, editing ? "Event updated" : "Event added"));
+        const c = $("cancelEdit"); if (c) c.addEventListener("click", () => { editIdx = null; renderPanel(); });
+        p.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => { editIdx = +b.dataset.edit; renderPanel(); }));
+        p.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => guard(async () => { const i = +b.dataset.up; if (i > 0) { [appData.shows[i - 1], appData.shows[i]] = [appData.shows[i], appData.shows[i - 1]]; await save(); renderPanel(); } })));
+        p.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => guard(async () => { const i = +b.dataset.down; if (i < appData.shows.length - 1) { [appData.shows[i + 1], appData.shows[i]] = [appData.shows[i], appData.shows[i + 1]]; await save(); renderPanel(); } })));
+        p.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => guard(async () => { if (!confirm("Delete this event?")) return; appData.shows.splice(+b.dataset.del, 1); editIdx = null; await save(); renderPanel(); }, "Event deleted")));
+      }
+      if (tab === "showcase") {
+        const editing = editIdx !== null && appData.gallery[editIdx] ? appData.gallery[editIdx] : null;
+        const g = editing || { url: "", title: "", desc: "", about: false };
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-2 border-l-4 border-[#089908] pl-4">Showcase Room</h2><p class="text-white/40 text-sm mb-6 max-w-2xl">Each image opens on the live site with its own title and description. The image marked <span class="text-[#089908] font-bold">About story</span> carries the artist's story (the bio + identity from the Identity tab).</p><div class="row-card max-w-2xl space-y-4 mb-8"><p class="text-[10px] font-black uppercase tracking-widest text-[#089908]">${editing ? "Editing: " + esc(g.title || "image") : "Add an image"}</p><div class="flex gap-3 items-start"><div class="flex-1 space-y-3"><div class="upload-drop" id="gDrop">Click to upload an image (or paste a URL below)<input type="file" accept="image/*" class="hidden" data-folder="showcase" data-target="gUrl"></div><input id="gUrl" class="field" placeholder="Image" value="${esc(g.url)}"></div>${g.url ? `<img src="${esc(g.url)}" class="thumb" onerror="this.style.opacity=0.2">` : ""}</div><input id="gTitle" class="field" placeholder="Title (e.g. Kente Culture)" value="${esc(g.title || "")}"><textarea id="gDesc" rows="3" class="field" placeholder="What is this image about? (its description on the live site)">${esc(g.desc || "")}</textarea><label class="flex items-center gap-3 text-sm font-bold text-white/80"><input type="checkbox" id="gAbout" ${g.about ? "checked" : ""} class="w-4 h-4 accent-[#089908]"> This is the About story (uses the Identity bio)</label><div class="flex gap-3">${editing ? `<button id="cancelEdit" class="btn-ghost">Cancel</button>` : ""}<button id="saveShowcase" class="btn flex-1">${editing ? "Save changes" : "+ Add image"}</button></div></div><div class="space-y-3 max-w-2xl">${appData.gallery.map((gi, i) => `<div class="row-card flex items-center gap-4"><img src="${esc(gi.url)}" class="thumb" onerror="this.style.opacity=0.2"><div class="flex-1 min-w-0"><p class="font-black uppercase text-sm">${esc(gi.title || "Untitled")}${gi.about ? ' <span class="text-[#089908] text-[10px] font-black tracking-widest align-middle">· ABOUT STORY</span>' : ""}</p><p class="text-xs text-gray-500 truncate">${esc(gi.desc || "")}</p></div><div class="flex gap-1.5"><button class="icon-btn green" data-edit="${i}"><i class="fa fa-pen"></i></button><button class="icon-btn green" data-up="${i}"><i class="fa fa-arrow-up"></i></button><button class="icon-btn green" data-down="${i}"><i class="fa fa-arrow-down"></i></button><button class="icon-btn danger" data-del="${i}"><i class="fa fa-trash"></i></button></div></div>`).join("") || '<p class="text-white/30 text-sm">No images yet.</p>'}</div>`;
+        $("saveShowcase").addEventListener("click", () => guard(async () => {
+          const d = { url: $("gUrl").value.trim(), title: $("gTitle").value.trim(), desc: $("gDesc").value.trim(), about: $("gAbout").checked };
+          if (!d.url) throw new Error("An image is required");
+          if (d.about) appData.gallery.forEach(x => x.about = false);
+          if (editing) appData.gallery[editIdx] = d; else appData.gallery.push(d);
+          editIdx = null; await save(); renderPanel();
+        }, editing ? "Image updated" : "Image added"));
+        const c = $("cancelEdit"); if (c) c.addEventListener("click", () => { editIdx = null; renderPanel(); });
+        p.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => { editIdx = +b.dataset.edit; renderPanel(); }));
+        p.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => guard(async () => { const i = +b.dataset.up; if (i > 0) { [appData.gallery[i - 1], appData.gallery[i]] = [appData.gallery[i], appData.gallery[i - 1]]; await save(); renderPanel(); } })));
+        p.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => guard(async () => { const i = +b.dataset.down; if (i < appData.gallery.length - 1) { [appData.gallery[i + 1], appData.gallery[i]] = [appData.gallery[i], appData.gallery[i + 1]]; await save(); renderPanel(); } })));
+        p.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => guard(async () => { if (!confirm("Delete this image?")) return; appData.gallery.splice(+b.dataset.del, 1); editIdx = null; await save(); renderPanel(); }, "Image deleted")));
+      }
+      if (tab === "videos") {
+        const vids = (appData.videos || []).slice(0, 3);
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-2 border-l-4 border-[#089908] pl-4">Videos</h2><p class="text-white/40 text-sm mb-6">Paste YouTube links (max 3). They appear on the live site's Videos section.</p><div class="space-y-3 max-w-2xl">${[0, 1, 2].map(i => `<input id="v${i}" class="field" placeholder="YouTube link ${i + 1}" value="${esc(vids[i] || "")}">`).join("")}</div><button id="saveVideos" class="btn mt-5">Save →</button>`;
+        $("saveVideos").addEventListener("click", () => guard(async () => { appData.videos = [0, 1, 2].map(i => $("v" + i).value.trim()).filter(Boolean); await save(); renderPanel(); }, "Videos saved"));
+      }
+      if (tab === "socials") {
+        const keys = Object.keys(appData.socials || {});
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-2 border-l-4 border-[#089908] pl-4">Socials</h2><p class="text-white/40 text-sm mb-6 max-w-2xl">These power the hero pill, the Available On widget and the header icons. Paste the artist's real links here.</p><div class="space-y-3 max-w-2xl">${keys.map(k => `<div class="flex items-center gap-3"><span class="w-28 text-[10px] font-black uppercase tracking-widest text-white/50 shrink-0">${esc(k)}</span><input class="field flex-1 social-input" data-key="${esc(k)}" value="${esc(appData.socials[k] || "")}" placeholder="https://..."></div>`).join("")}</div><div class="flex gap-3 mt-5 max-w-2xl"><input id="newKey" class="field w-40" placeholder="new platform name"><input id="newUrl" class="field flex-1" placeholder="https://..."><button id="addSocial" class="btn-ghost">+ Add</button></div><button id="saveSocials" class="btn mt-6">Save →</button>`;
+        $("addSocial").addEventListener("click", () => { const k = $("newKey").value.trim().toLowerCase().replace(/\s+/g, ""); const u = $("newUrl").value.trim(); if (!k || !u) return toast("❌ Fill both fields", "error"); appData.socials[k] = u; renderPanel(); });
+        $("saveSocials").addEventListener("click", () => guard(async () => { const next = {}; p.querySelectorAll(".social-input").forEach(inp => { if (inp.value.trim()) next[inp.dataset.key] = inp.value.trim(); }); appData.socials = next; await save(); renderPanel(); }, "Socials saved"));
+      }
+      if (tab === "messages") {
+        p.innerHTML = `<h2 class="text-2xl font-black uppercase mb-6 border-l-4 border-[#089908] pl-4">Messages</h2><div class="space-y-3 max-w-3xl">${msgs.map(m => `<div class="row-card"><div class="flex items-start justify-between gap-4"><div class="min-w-0"><p class="font-black text-sm">${esc(m.name)} <span class="text-white/40 font-normal">· ${esc(m.email)}</span></p><p class="text-[11px] text-white/30">${new Date(m.created_at).toLocaleString()}</p></div><button class="icon-btn danger" data-del="${m.id}"><i class="fa fa-trash"></i></button></div><p class="mt-2 text-sm text-gray-300 whitespace-pre-wrap">${esc(m.message)}</p></div>`).join("") || '<p class="text-white/30 text-sm">📭 No messages yet.</p>'}</div>`;
+        p.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => guard(async () => { if (!confirm("Delete this message?")) return; await sb.from("messages").delete().eq("id", +b.dataset.del); await loadMsgs(); renderPanel(); }, "Message deleted")));
+      }
+      p.querySelectorAll("[data-folder]").forEach(inp => inp.addEventListener("change", async () => {
+        const file = inp.files[0]; if (!file) return;
+        await guard(async () => { const url = await uploadImage(file, inp.dataset.folder); $(inp.dataset.target).value = url; }, "Image uploaded");
+      }));
+    }
+
+    async function loadMsgs() { const { data, error } = await sb.from("messages").select("*").order("created_at", { ascending: false }); if (!error) msgs = data || []; }
+
+    sb.auth.onAuthStateChanged(async (u) => {
+      user = u;
+      if (user) { try { await loadData(); await loadMsgs(); } catch (e) { toast("❌ " + e.message, "error"); } }
+      render();
+    });
+  </script>
+</body>
+</html>

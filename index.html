@@ -12,21 +12,21 @@
   <meta name="keywords" content="LEO SNOW, afrobeats, African musician, new music, tour, dark wave, experimental pop, The Storm From Africa">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <!-- TODO: replace with the final GitHub Pages / custom domain URL once deployed -->
-  <link rel="canonical" href="">
+  <link rel="canonical" href="https://inventor40028.github.io/leo-snow/">
 
   <!-- Open Graph / Social -->
   <meta property="og:title" content="LEO SNOW – Official Website | The Storm From Africa">
   <meta property="og:description" content="Experience the cold wave of LEO SNOW. New music, visuals, and tour dates.">
-  <meta property="og:image" content="pics/hero.png">
+  <meta property="og:image" content="https://inventor40028.github.io/leo-snow/pics/hero.jpg">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="LEO SNOW – The Storm From Africa">
   <meta name="twitter:description" content="The global takeover begins here.">
-  <meta name="twitter:image" content="pics/hero.png">
+  <meta name="twitter:image" content="https://inventor40028.github.io/leo-snow/pics/hero.jpg">
 
   <!-- Preload hero images per device -->
-  <link rel="preload" as="image" href="pics/hero.png" media="(min-width: 768px)">
-  <link rel="preload" as="image" href="pics/mobilehero.png" media="(max-width: 767px)">
+  <link rel="preload" as="image" href="pics/hero.jpg" media="(min-width: 768px)">
+  <link rel="preload" as="image" href="pics/mobilehero.jpg" media="(max-width: 767px)">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -216,7 +216,7 @@
       } catch (e) { console.warn('Supabase init failed', e); }
     }
     const DEFAULT_DATA = {
-      bio: { text: "Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.", photo: "pics/mobilehero.png" },
+      bio: { text: "Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.", photo: "pics/mobilehero.jpg" },
       // ===== DEMO CONTENT (hard-coded for preview — edit freely) =====
       // Later the admin/Supabase will replace these arrays; keep the same shapes.
       releases: [
@@ -233,9 +233,9 @@
         { id: 105, date: "2027-02-14", venue: "Cold Room Sessions", city: "Berlin, Germany", ticket: "https://example.com/tickets" }
       ],
       gallery: [
-        { id: 201, url: "pics/hero.png", title: "My Story", about: true },
+        { id: 201, url: "pics/hero.jpg", title: "My Story", about: true },
         { id: 202, url: "pics/kente.jpg", title: "Kente Culture", desc: "Wrapped in the colors of home — every thread of kente carries where we come from and where we're going." },
-        { id: 203, url: "pics/mobilehero.png", title: "Backstage", desc: "Behind the scenes before the storm — the quiet moments right before the stage comes alive." }
+        { id: 203, url: "pics/mobilehero.jpg", title: "Backstage", desc: "Behind the scenes before the storm — the quiet moments right before the stage comes alive." }
       ],
       socials: { tiktok: "https://tiktok.com", instagram: "https://instagram.com", spotify: "https://spotify.com", audiomack: "https://audiomack.com", facebook: "https://facebook.com", threads: "https://threads.net", snapchat: "https://snapchat.com", twitter: "https://twitter.com", youtube: "https://youtube.com", soundcloud: "https://soundcloud.com", applemusic: "https://music.apple.com", bandcamp: "https://bandcamp.com" },
       videos: [],
@@ -358,7 +358,7 @@
         "@type": "MusicGroup",
         "name": "LEO SNOW",
         "alternateName": "The Storm From Africa",
-        "image": "pics/hero.png",
+        "image": "pics/hero.jpg",
         "genre": ["Afrobeats", "Alté", "Hip-Hop", "Experimental"],
         "album": (appData.releases || []).map(r => ({ "@type": "MusicAlbum", "name": r.title, "datePublished": r.year })),
         "sameAs": Object.values(appData.socials || {}).filter(v => v && v !== '#')
@@ -397,7 +397,7 @@
 
     function showMERCHComingSoon() { const modal = document.createElement('div'); modal.className = 'fixed inset-0 bg-black z-[200] flex flex-col items-center justify-center p-6 transition-all'; modal.innerHTML = `<div class="text-center max-w-2xl"><h2 class="text-8xl md:text-9xl font-black uppercase text-[#089908] mb-6">Coming Soon</h2><p class="text-2xl md:text-3xl font-bold text-white mb-12">Merchandise drop is being prepared.<br>Stay tuned.</p><button id="MERCHBackBtn" class="bg-[#089908] text-black px-10 py-4 text-xl font-black uppercase hover:scale-105 transition-all shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)] rounded-btn">← Go Back</button></div>`; document.body.appendChild(modal); document.body.style.overflow = 'hidden'; const closeModal = () => { modal.remove(); document.body.style.overflow = ''; }; modal.querySelector('#MERCHBackBtn').addEventListener('click', closeModal); modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }); }
 
-    function Hero() { return `<div id="heroStage" class="relative h-[260vh]"><section id="home" class="sticky top-0 h-screen z-10 flex items-center overflow-hidden"><h1 class="sr-only">LEO SNOW – Official Website of The Storm From Africa</h1><div class="absolute inset-0 z-0 hidden md:block hero-bg" data-zoombg><img src="pics/hero.png" alt="LEO SNOW hero" class="w-full h-full object-cover object-[75%_50%]"><div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent"></div></div><div class="absolute inset-0 z-0 md:hidden hero-bg" data-zoombg><img src="pics/mobilehero.png" alt="LEO SNOW hero" class="w-full h-full object-cover object-right"><div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-transparent"></div></div><div class="absolute z-10 left-[2vw] top-20 lg:left-[6vw] lg:top-[18vh]" data-zoom="1"><div class="hero-title"><img src="pics/leo-snow-logo.png" alt="LEO SNOW" class="w-[min(92vw,55vh)] lg:w-[min(38vw,calc(132vh-295px))] max-w-none h-auto"></div></div><div class="md:hidden absolute z-10 left-3 top-[44%]" data-zoom="1"><div class="backdrop-blur-md bg-white/10 border border-white/15 rounded-full px-3 py-5 flex flex-col items-center gap-5 shadow-[0_8px_25px_rgba(0,0,0,0.35)]"><a href="${appData.socials.youtube}" target="_blank" aria-label="YouTube" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-youtube"></i></a><a href="${appData.socials.soundcloud}" target="_blank" aria-label="SoundCloud" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-soundcloud"></i></a><a href="${appData.socials.applemusic}" target="_blank" aria-label="Apple Music" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-apple"></i></a><a href="${appData.socials.bandcamp}" target="_blank" aria-label="BandCamp" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-bandcamp"></i></a></div></div><div class="relative z-10 px-4 md:px-8 w-full flex flex-col justify-end h-full pt-20 pb-10 md:pb-12" data-zoom="0.7"><div class="space-y-3"><div class="relative"><div class="absolute left-0 top-0 bottom-0 w-0.5 bg-[#FFDE21]"></div><div class="flex flex-col items-start gap-1 pl-4"><span class="bg-black text-white font-black uppercase text-sm md:text-lg px-2 py-0.5 leading-tight">Ghana Boy With</span><span class="bg-black text-white font-black uppercase text-sm md:text-lg px-2 py-0.5 leading-tight">A Different Flow</span></div></div><a href="#music" class="inline-block bg-[#089908] text-black px-8 py-4 text-lg font-black uppercase hover:bg-[#FFDE21] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">Stream Latest</a></div></div></section>`; }
+    function Hero() { return `<div id="heroStage" class="relative h-[260vh]"><section id="home" class="sticky top-0 h-screen z-10 flex items-center overflow-hidden"><h1 class="sr-only">LEO SNOW – Official Website of The Storm From Africa</h1><div class="absolute inset-0 z-0 hidden md:block hero-bg" data-zoombg><img src="pics/hero.jpg" alt="LEO SNOW hero" class="w-full h-full object-cover object-[75%_50%]"><div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent"></div></div><div class="absolute inset-0 z-0 md:hidden hero-bg" data-zoombg><img src="pics/mobilehero.jpg" alt="LEO SNOW hero" class="w-full h-full object-cover object-right"><div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-transparent"></div></div><div class="absolute z-10 left-[2vw] top-20 lg:left-[6vw] lg:top-[18vh]" data-zoom="1"><div class="hero-title"><img src="pics/leo-snow-logo.png" alt="LEO SNOW" class="w-[min(92vw,55vh)] lg:w-[min(38vw,calc(132vh-295px))] max-w-none h-auto"></div></div><div class="md:hidden absolute z-10 left-3 top-[44%]" data-zoom="1"><div class="backdrop-blur-md bg-white/10 border border-white/15 rounded-full px-3 py-5 flex flex-col items-center gap-5 shadow-[0_8px_25px_rgba(0,0,0,0.35)]"><a href="${appData.socials.youtube}" target="_blank" aria-label="YouTube" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-youtube"></i></a><a href="${appData.socials.soundcloud}" target="_blank" aria-label="SoundCloud" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-soundcloud"></i></a><a href="${appData.socials.applemusic}" target="_blank" aria-label="Apple Music" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-apple"></i></a><a href="${appData.socials.bandcamp}" target="_blank" aria-label="BandCamp" class="text-white text-xl hover:text-[#089908] transition-colors"><i class="fa-brands fa-bandcamp"></i></a></div></div><div class="relative z-10 px-4 md:px-8 w-full flex flex-col justify-end h-full pt-20 pb-10 md:pb-12" data-zoom="0.7"><div class="space-y-3"><div class="relative"><div class="absolute left-0 top-0 bottom-0 w-0.5 bg-[#FFDE21]"></div><div class="flex flex-col items-start gap-1 pl-4"><span class="bg-black text-white font-black uppercase text-sm md:text-lg px-2 py-0.5 leading-tight">Ghana Boy With</span><span class="bg-black text-white font-black uppercase text-sm md:text-lg px-2 py-0.5 leading-tight">A Different Flow</span></div></div><a href="#music" class="inline-block bg-[#089908] text-black px-8 py-4 text-lg font-black uppercase hover:bg-[#FFDE21] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">Stream Latest</a></div></div></section>`; }
 
     function StoryShowcaseSection() {
       const galleryItems = appData.gallery || [];
