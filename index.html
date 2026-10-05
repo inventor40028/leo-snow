@@ -200,8 +200,8 @@
     //    create policy "pub insert msg" on messages for insert with check (true);
     // Until both are filled in, the site runs on DEFAULT_DATA below.
     // ============================================================
-    const SUPABASE_URL = "";
-    const SUPABASE_ANON_KEY = "";
+    const SUPABASE_URL = "https://cwotoefcpjehfhxidbaw.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b3RvZWZjcGplaGZoeGlkYmF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjE2MjEsImV4cCI6MjEwNjc5NzYyMX0.3aPe4qed65H27PiVHfL1kvb_Vj_QIsH69chNbAp2ZDw";
     let supabase = null;
     async function initBackend() {
       if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
