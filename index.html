@@ -174,14 +174,34 @@
 
   <script>
     // ============================================================
-    // BACKEND — Supabase comes LATER (per plan).
-    // For now the site runs entirely on DEFAULT_DATA below.
-    // When Supabase is connected:
-    //   1. load the content record, assign it to appData, renderApp()
-    //   2. subscribe to changes and re-render on update
-    //   3. contact-form submissions insert into the messages table
-    // The UI code below is already shaped for that swap.
+    // BACKEND — Supabase (live content + contact inbox)
+    // 1. Create a project at supabase.com, then paste your project
+    //    URL and anon key below.
+    // 2. Run this SQL in the Supabase SQL editor:
+    //    create table site_content (id int primary key, data jsonb);
+    //    insert into site_content (id, data) values (1, '{}');
+    //    create table messages (id bigint generated always as identity primary key, name text, email text, message text, created_at timestamptz default now());
+    //    alter table site_content enable row level security;
+    //    alter table messages enable row level security;
+    //    create policy "pub read" on site_content for select using (true);
+    //    create policy "pub update" on site_content for update using (true) with check (true);
+    //    create policy "pub read msg" on messages for select using (true);
+    //    create policy "pub insert msg" on messages for insert with check (true);
+    // Until both are filled in, the site runs on DEFAULT_DATA below.
     // ============================================================
+    const SUPABASE_URL = "";
+    const SUPABASE_ANON_KEY = "";
+    let supabase = null;
+    async function initBackend() {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+      try {
+        await new Promise((resolve, reject) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'; s.onload = resolve; s.onerror = reject; document.head.appendChild(s); });
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await supabase.from('site_content').select('data').eq('id', 1).maybeSingle();
+        if (!error && data && data.data) { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), data.data); renderApp(); }
+        supabase.channel('site-content').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, (payload) => { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), payload.new.data); renderApp(); }).subscribe();
+      } catch (e) { console.warn('Supabase init failed', e); }
+    }
     const DEFAULT_DATA = {
       bio: { text: "Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.", photo: "pics/mobilehero.png" },
       // ===== DEMO CONTENT (hard-coded for preview — edit freely) =====
@@ -576,7 +596,10 @@
           const email = document.getElementById('contactEmail')?.value.trim();
           const message = document.getElementById('contactMessage')?.value.trim();
           if (!name || !email || !message) { showCoolToast('❌ Please fill all fields', 'error'); return; }
-          // TODO (Supabase): insert { name, email, message } into the messages table
+          if (supabase) {
+            const { error } = await supabase.from('messages').insert({ name, email, message });
+            if (error) { showCoolToast('❌ Failed to send. Try again.', 'error'); return; }
+          }
           showCoolToast('✨ Message sent to LEO SNOW! ✨');
           contactForm.reset();
         });
@@ -678,6 +701,7 @@
       initGlobalEffects();
       initHeroZoom();
       initHeader();
+      initBackend();
       // Popup ad shows 5s after load — only when enabled in the (future) admin
       setTimeout(() => { if (appData && appData.popupAd && appData.popupAd.enabled && !popupShown) { showPopupAd(); popupShown = true; } }, 5000);
     }
