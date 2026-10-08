@@ -702,13 +702,15 @@
     // Hero → Story scroll zoom: the hero content approaches & fades, the hero photo dissolves,
     // and the Videos section scales up from BEHIND the hero (a walk-forward transition, no scroll-down)
     function initHeroZoom() {
-      const stage = document.getElementById('heroStage');
-      const hero = document.getElementById('home');
-      const next = document.getElementById('videos');
-      if (!stage || !hero || !next) return;
+      // renderApp() rebuilds the whole DOM on every Supabase update, so re-query
+      // the nodes on each frame instead of caching them — cached refs go stale.
       let ticking = false;
       const update = () => {
         ticking = false;
+        const stage = document.getElementById('heroStage');
+        const hero = document.getElementById('home');
+        const next = document.getElementById('videos');
+        if (!stage || !hero || !next) return;
         const total = stage.offsetHeight - window.innerHeight;
         if (total <= 0) return;
         const p = Math.min(1, Math.max(0, window.scrollY / total));
