@@ -179,9 +179,10 @@
 
     async function loadMsgs() { const { data, error } = await sb.from("messages").select("*").order("created_at", { ascending: false }); if (!error) msgs = data || []; }
 
+    // supabase-js v2 calls back as (event, session); older builds passed (user). Handle both.
     const authListen = typeof sb.auth.onAuthStateChanged === "function" ? sb.auth.onAuthStateChanged.bind(sb.auth) : sb.auth.onAuthStateChange.bind(sb.auth);
-    authListen(async (u) => {
-      user = u;
+    authListen(async (eventOrUser, session) => {
+      user = (session && session.user) || (eventOrUser && eventOrUser.id ? eventOrUser : null);
       if (user) { try { await loadData(); await loadMsgs(); } catch (e) { toast("❌ " + e.message, "error"); } }
       render();
     });
