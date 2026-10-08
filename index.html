@@ -539,7 +539,7 @@
       const body = videos.length === 0
         ? `<div class="empty-message">🎥 No videos yet. Check back later.</div>`
         : `<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">${videos.map((url, vIdx) => { const embedUrl = getYoutubeEmbedUrl(url); return embedUrl ? `<div class="release-card p-2"><div class="aspect-video w-full overflow-hidden rounded-lg"><iframe src="${embedUrl}" allowfullscreen loading="lazy" class="w-full h-full" style="border:0;" title="LEO SNOW video ${vIdx+1}"></iframe></div></div>` : ''; }).join('')}</div><div class="text-center mt-8"><a href="https://www.youtube.com" target="_blank" class="btn-new"><!-- TODO: point at the real LEO SNOW channel -->More on YouTube →</a></div>`;
-      return `<section id="videos" class="sticky top-0 -mt-[100vh] h-screen z-0 bg-black overflow-hidden flex items-center"><div class="max-w-7xl mx-auto w-full px-6"><div class="fade-left"><h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-10 text-[#089908]">Videos</h2></div>${body}</div></section>`;
+      return `<section id="videos" class="sticky top-0 -mt-[100vh] h-screen z-0 bg-black overflow-hidden flex items-center"><div class="pointer-events-none select-none absolute inset-x-0 bottom-0 text-center font-black uppercase leading-none text-white/[0.06]" style="font-size: clamp(4.5rem, 14vw, 12rem);">Videos</div><div class="relative max-w-7xl mx-auto w-full px-6">${body}</div></section>`;
     }
 
     function ShowsSection() {
