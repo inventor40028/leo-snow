@@ -601,6 +601,7 @@
 
     // All event wiring happens HERE, exactly once per render (single attach point)
     function attachListeners() {
+      initHeaderSpy();
       const MERCHDesktop = document.getElementById('MERCHBtnDesktop');
       const MERCHMobile = document.getElementById('MERCHBtnMobile');
       if (MERCHDesktop) MERCHDesktop.addEventListener('click', () => location.href = 'merch.html');
@@ -744,24 +745,43 @@
     }
 
     // Scroll-aware header: solid bar after leaving the top + scroll-spy for the active section
+    // The header must stay transparent over the hero and turn solid once scrolled.
+    // renderApp() rebuilds the whole DOM whenever Supabase pushes an update, which
+    // orphans any element we cached here — so the listener lives on window (which
+    // survives re-renders) and re-queries the header on every event.
+    const NAV_IDS = { about: 'ABOUT', videos: 'VIDEOS', music: 'MUSIC', shows: 'EVENTS', gallery: 'VISUALS', contact: 'BOOKING' };
+    let headerSpy = null;
+    let headerScrollBound = false;
+
     function initHeader() {
+      if (headerScrollBound) return;
+      headerScrollBound = true;
+      const onScroll = () => {
+        const header = document.getElementById('siteHeader');
+        if (!header) return;
+        header.classList.toggle('header-solid', window.scrollY > 40);
+        if (window.scrollY <= 40) header.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('nav-active'));
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // Re-run after every renderApp(): the observed sections are brand-new nodes.
+    function initHeaderSpy() {
+      if (headerSpy) headerSpy.disconnect();
       const header = document.getElementById('siteHeader');
       if (!header) return;
-      const ids = { about: 'ABOUT', videos: 'VIDEOS', music: 'MUSIC', shows: 'EVENTS', gallery: 'VISUALS', contact: 'BOOKING' };
       const links = {};
       header.querySelectorAll('[data-nav]').forEach(a => { links[a.getAttribute('data-nav')] = a; });
-      const onScroll = () => { header.classList.toggle('header-solid', window.scrollY > 40); if (window.scrollY <= 40) { Object.values(links).forEach(a => a.classList.remove('nav-active')); } };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
       const setActive = (id) => {
         Object.values(links).forEach(a => a.classList.remove('nav-active'));
-        if (links[ids[id]]) links[ids[id]].classList.add('nav-active');
+        if (links[NAV_IDS[id]]) links[NAV_IDS[id]].classList.add('nav-active');
       };
-      const spy = new IntersectionObserver((entries) => {
+      headerSpy = new IntersectionObserver((entries) => {
         entries.forEach(en => { if (en.isIntersecting) setActive(en.target.id); });
       }, { rootMargin: '-35% 0px -55% 0px' });
-      Object.keys(ids).forEach(id => { const s = document.getElementById(id); if (s) spy.observe(s); });
-      setActive('about');
+      Object.keys(NAV_IDS).forEach(id => { const s = document.getElementById(id); if (s) headerSpy.observe(s); });
     }
 
     function initialize() {
