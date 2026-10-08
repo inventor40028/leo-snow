@@ -497,7 +497,10 @@
       const items = appData.releases || [];
       document.querySelectorAll('.stream-toggle').forEach(btn => {
         btn.addEventListener('click', () => {
-          const panel = document.querySelector(`[data-panel="${btn.getAttribute('data-id')}"]`);
+          // Each release is rendered twice (desktop grid + mobile scroller), so
+          // search inside this button's own card — a global query would always
+          // toggle the desktop copy and the mobile panel would never open.
+          const panel = btn.closest('.music-card')?.querySelector('.stream-panel');
           if (!panel) return;
           const open = panel.classList.toggle('open');
           const chev = btn.querySelector('i');
