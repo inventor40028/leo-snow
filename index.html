@@ -204,39 +204,23 @@
     // ============================================================
     const SUPABASE_URL = "https://cwotoefcpjehfhxidbaw.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b3RvZWZjcGplaGZoeGlkYmF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjE2MjEsImV4cCI6MjEwNjc5NzYyMX0.3aPe4qed65H27PiVHfL1kvb_Vj_QIsH69chNbAp2ZDw";
-    let supabase = null;
+    let sb = null;
     async function initBackend() {
       if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
       try {
         await new Promise((resolve, reject) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'; s.onload = resolve; s.onerror = reject; document.head.appendChild(s); });
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const { data, error } = await supabase.from('site_content').select('data').eq('id', 1).maybeSingle();
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await sb.from('site_content').select('data').eq('id', 1).maybeSingle();
         if (!error && data && data.data) { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), data.data); renderApp(); }
-        supabase.channel('site-content').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, (payload) => { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), payload.new.data); renderApp(); }).subscribe();
+        sb.channel('site-content').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, (payload) => { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), payload.new.data); renderApp(); }).subscribe();
       } catch (e) { console.warn('Supabase init failed', e); }
     }
     const DEFAULT_DATA = {
       bio: { text: "Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.", photo: "pics/mobilehero.jpg" },
-      // ===== DEMO CONTENT (hard-coded for preview — edit freely) =====
-      // Later the admin/Supabase will replace these arrays; keep the same shapes.
-      releases: [
-        { id: 1, title: "Cold Wave", year: "2026", type: "Single", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23089908'/%3E%3Cstop offset='1' stop-color='%23044204'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='330' font-family='Arial Black,Arial' font-size='92' font-weight='900' fill='%23fff' text-anchor='middle'%3ECOLD%3C/text%3E%3Ctext x='300' y='430' font-family='Arial Black,Arial' font-size='92' font-weight='900' fill='%23fff' text-anchor='middle'%3EWAVE%3C/text%3E%3C/svg%3E", spotify: "https://open.spotify.com", audiomack: "https://audiomack.com", boomplay: "", deezer: "", apple: "", youtubemusic: "", custom: "" },
-        { id: 2, title: "Harmattan Nights", year: "2025", type: "EP", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FFDE21'/%3E%3Cstop offset='1' stop-color='%23b99e00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='320' font-family='Arial Black,Arial' font-size='72' font-weight='900' fill='%23000' text-anchor='middle'%3EHARMATTAN%3C/text%3E%3Ctext x='300' y='410' font-family='Arial Black,Arial' font-size='72' font-weight='900' fill='%23000' text-anchor='middle'%3ENIGHTS%3C/text%3E%3C/svg%3E", spotify: "", audiomack: "", boomplay: "https://boomplay.com", deezer: "https://deezer.com", apple: "", youtubemusic: "", custom: "" },
-        { id: 3, title: "Different Flow", year: "2026", type: "Single", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23eb0905'/%3E%3Cstop offset='1' stop-color='%236e0402'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='320' font-family='Arial Black,Arial' font-size='76' font-weight='900' fill='%23fff' text-anchor='middle'%3EDIFFERENT%3C/text%3E%3Ctext x='300' y='410' font-family='Arial Black,Arial' font-size='76' font-weight='900' fill='%23fff' text-anchor='middle'%3EFLOW%3C/text%3E%3C/svg%3E", spotify: "https://open.spotify.com", audiomack: "", boomplay: "", deezer: "", apple: "https://music.apple.com", youtubemusic: "https://music.youtube.com", custom: "https://audiomack.com" },
-        { id: 4, title: "Accra Nights", year: "2024", type: "Mixtape", art: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23134e4a'/%3E%3Cstop offset='1' stop-color='%23090504'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' fill='url(%23g)'/%3E%3Ctext x='300' y='320' font-family='Arial Black,Arial' font-size='80' font-weight='900' fill='%23FFDE21' text-anchor='middle'%3EACCRA%3C/text%3E%3Ctext x='300' y='410' font-family='Arial Black,Arial' font-size='80' font-weight='900' fill='%23FFDE21' text-anchor='middle'%3ENIGHTS%3C/text%3E%3C/svg%3E", spotify: "https://open.spotify.com", audiomack: "https://audiomack.com", boomplay: "", deezer: "", apple: "", youtubemusic: "", custom: "" }
-      ],
-      shows: [
-        { id: 101, date: "2026-10-24", venue: "Unity Gardens", city: "Accra, Ghana", ticket: "https://example.com/tickets" },
-        { id: 102, date: "2026-11-15", venue: "Neo Night Fest", city: "Lagos, Nigeria", ticket: "" },
-        { id: 103, date: "2026-12-06", venue: "SnowBall Live", city: "London, UK", ticket: "https://example.com/tickets" },
-        { id: 104, date: "2027-01-17", venue: "Afro Future Fest", city: "Johannesburg, South Africa", ticket: "" },
-        { id: 105, date: "2027-02-14", venue: "Cold Room Sessions", city: "Berlin, Germany", ticket: "https://example.com/tickets" }
-      ],
-      gallery: [
-        { id: 201, url: "pics/hero.jpg", title: "My Story", about: true },
-        { id: 202, url: "pics/kente.jpg", title: "Kente Culture", desc: "Wrapped in the colors of home — every thread of kente carries where we come from and where we're going." },
-        { id: 203, url: "pics/mobilehero.jpg", title: "Backstage", desc: "Behind the scenes before the storm — the quiet moments right before the stage comes alive." }
-      ],
+      // Empty by design — all content comes from the Control Room (admin.html → Supabase).
+      releases: [],
+      shows: [],
+      gallery: [],
       socials: { tiktok: "https://tiktok.com", instagram: "https://instagram.com", spotify: "https://spotify.com", audiomack: "https://audiomack.com", facebook: "https://facebook.com", threads: "https://threads.net", snapchat: "https://snapchat.com", twitter: "https://twitter.com", youtube: "https://youtube.com", soundcloud: "https://soundcloud.com", applemusic: "https://music.apple.com", bandcamp: "https://bandcamp.com" },
       videos: [],
       popupAd: { enabled: false, type: "music", title: "", imageUrl: "", message: "", releaseId: null, showId: null, videoIndex: -1, customButtons: [] },
@@ -669,8 +653,8 @@
           const email = document.getElementById('contactEmail')?.value.trim();
           const message = document.getElementById('contactMessage')?.value.trim();
           if (!name || !email || !message) { showCoolToast('❌ Please fill all fields', 'error'); return; }
-          if (supabase) {
-            const { error } = await supabase.from('messages').insert({ name, email, message });
+          if (sb) {
+            const { error } = await sb.from('messages').insert({ name, email, message });
             if (error) { showCoolToast('❌ Failed to send. Try again.', 'error'); return; }
           }
           showCoolToast('✨ Message sent to LEO SNOW! ✨');
