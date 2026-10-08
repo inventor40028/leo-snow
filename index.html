@@ -602,6 +602,7 @@
     // All event wiring happens HERE, exactly once per render (single attach point)
     function attachListeners() {
       initHeaderSpy();
+      applyHeaderState();
       const MERCHDesktop = document.getElementById('MERCHBtnDesktop');
       const MERCHMobile = document.getElementById('MERCHBtnMobile');
       if (MERCHDesktop) MERCHDesktop.addEventListener('click', () => location.href = 'merch.html');
@@ -753,18 +754,22 @@
     let headerSpy = null;
     let headerScrollBound = false;
 
+    // Applies the current scroll position to whatever header is in the DOM right now.
+    // Called on scroll/resize AND after every renderApp() rebuild, so a re-render that
+    // lands mid-scroll can't leave the new header stuck transparent.
+    function applyHeaderState() {
+      const header = document.getElementById('siteHeader');
+      if (!header) return;
+      header.classList.toggle('header-solid', window.scrollY > 40);
+      if (window.scrollY <= 40) header.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('nav-active'));
+    }
+
     function initHeader() {
       if (headerScrollBound) return;
       headerScrollBound = true;
-      const onScroll = () => {
-        const header = document.getElementById('siteHeader');
-        if (!header) return;
-        header.classList.toggle('header-solid', window.scrollY > 40);
-        if (window.scrollY <= 40) header.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('nav-active'));
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
-      onScroll();
+      window.addEventListener('scroll', applyHeaderState, { passive: true });
+      window.addEventListener('resize', applyHeaderState, { passive: true });
+      applyHeaderState();
     }
 
     // Re-run after every renderApp(): the observed sections are brand-new nodes.
