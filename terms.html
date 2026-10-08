@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LEO SNOW – Terms of Service</title>
+  <meta name="description" content="The terms governing the use of the official LEO SNOW website — tickets, content, merchandise, bookings and community conduct.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://inventor40028.github.io/leo-snow/terms.html">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background: #000; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #089908; }
+    ::selection { background: #089908; color: black; }
+    .legal h2 { scroll-margin-top: 5rem; }
+  </style>
+</head>
+<body class="text-white min-h-screen flex flex-col">
+  <div id="root" class="flex-1 flex flex-col"></div>
+
+  <script>
+    const SUPABASE_URL = "https://cwotoefcpjehfhxidbaw.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b3RvZWZjcGplaGZoeGlkYmF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjE2MjEsImV4cCI6MjEwNjc5NzYyMX0.3aPe4qed65H27PiVHfL1kvb_Vj_QIsH69chNbAp2ZDw";
+    let sb = null;
+
+    const DEFAULT_DATA = { socials: { tiktok: "https://tiktok.com", instagram: "https://instagram.com", spotify: "https://spotify.com", audiomack: "https://audiomack.com", facebook: "https://facebook.com", threads: "https://threads.net", snapchat: "https://snapchat.com", twitter: "https://twitter.com", youtube: "https://youtube.com", soundcloud: "https://soundcloud.com", applemusic: "https://music.apple.com", bandcamp: "https://bandcamp.com" } };
+    let appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
+
+    function Header() {
+      return `<nav class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10"><div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-4"><a href="index.html" class="text-lg font-black tracking-widest text-white hover:italic transition-all shrink-0">LEO SNOW</a><div class="flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.18em] text-gray-300"><a href="index.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Home</a><a href="music.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Music</a><a href="about.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">About</a><a href="merch.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Merch</a><a href="contact.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Contact</a></div></div></nav>`;
+    }
+
+    const SECTIONS = [
+      ["Acceptance of Terms", "By accessing or using the official LEO SNOW website (the \"Site\"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please discontinue use of the Site."],
+      ["Use of the Site", "This Site and its content — including music, videos, artwork, photography, logos and text — are provided for personal, non-commercial enjoyment. You may not reproduce, redistribute, resell or exploit any content from the Site without prior written permission from LEO SNOW or his representatives."],
+      ["Intellectual Property", "All content published on this Site is the property of LEO SNOW and is protected by applicable copyright and trademark laws. The LEO SNOW name, logo and associated branding may not be used without written consent."],
+      ["Events and Tickets", "Show dates, venues and ticket listings are provided for informational purposes. LEO SNOW is not responsible for tickets purchased from third-party resellers. Event details may change or be cancelled without prior notice; where a show is cancelled, refunds are handled by the original point of purchase."],
+      ["Merchandise", "Official merchandise, when available, is sold through the store linked on this Site. Product images are representative; colours, fits and finishes may vary. Any disputes regarding orders are handled by the fulfilment partner at the point of sale."],
+      ["Bookings and Inquiries", "Messages submitted through the contact form are received by the LEO SNOW team for the purpose of responding to your inquiry. Submitting a message does not constitute a binding booking, agreement or offer of any kind."],
+      ["Third-Party Links", "The Site links to third-party platforms — streaming services, social networks, ticket providers and stores. LEO SNOW is not responsible for the content, policies or practices of those external services."],
+      ["User Conduct", "You agree to use the Site lawfully and to submit only accurate information through its forms. Abuse, harassment, fraudulent submissions or attempts to disrupt the Site are prohibited and may result in legal action."],
+      ["Limitation of Liability", "The Site is provided \"as is\" without warranties of any kind. To the fullest extent permitted by law, LEO SNOW shall not be liable for any indirect, incidental or consequential damages arising from your use of the Site or reliance on its content."],
+      ["Changes to These Terms", "These Terms may be updated at any time. Continued use of the Site after changes are posted constitutes acceptance of the revised Terms, so please review this page periodically."],
+      ["Contact", "Questions about these Terms can be sent to leosnowbookings@gmail.com."]
+    ];
+
+    function LegalPage() {
+      const toc = SECTIONS.map(([t], i) => `<a href="#sec-${i}" class="block py-2 text-sm font-bold text-gray-400 hover:text-[#089908] transition-colors border-b border-white/5">${i + 1}. ${t}</a>`).join("");
+      const body = SECTIONS.map(([t, p], i) => `<div id="sec-${i}" class="mb-10"><h2 class="text-xl md:text-2xl font-black text-white mb-3">${i + 1}. ${t}</h2><p class="text-gray-400 leading-relaxed">${p}</p></div>`).join("");
+      return `<main class="flex-1 relative py-24 px-6 overflow-hidden">
+        <div class="absolute inset-x-0 -top-4 text-center pointer-events-none select-none font-black uppercase leading-none" style="font-size: clamp(3.5rem, 14vw, 14rem); color: rgba(255,255,255,0.04);">Terms</div>
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(8,153,8,0.12) 0%, rgba(0,0,0,0) 65%);"></div>
+        <div class="relative max-w-5xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6"><span class="w-5 h-5 rounded-full bg-[#089908]/20 border border-[#089908] text-[#089908] flex items-center justify-center text-[10px]"><i class="fa-solid fa-file-contract"></i></span><span class="text-xs font-black uppercase tracking-[0.2em] text-gray-300">Legal</span></div>
+          <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white mb-4">Terms of <span class="text-[#089908]">Service</span></h1>
+          <p class="text-gray-400 mb-12">Last updated: October 8, 2026. These terms govern your use of the official LEO SNOW website.</p>
+          <div class="grid md:grid-cols-[260px_1fr] gap-10 items-start">
+            <div class="legal hidden md:block sticky top-20"><p class="text-[10px] font-black uppercase tracking-[0.25em] text-white/50 mb-3">On this page</p>${toc}</div>
+            <div class="legal">${body}</div>
+          </div>
+        </div>
+      </main>`;
+    }
+
+    function Footer() {
+      const s = appData.socials || {};
+      const socials = [["youtube","fa-brands fa-youtube"],["instagram","fa-brands fa-instagram"],["tiktok","fa-brands fa-tiktok"],["twitter","fa-brands fa-x-twitter"],["spotify","fa-brands fa-spotify"],["soundcloud","fa-brands fa-soundcloud"]].filter(([k]) => s[k]).map(([k, ic]) => `<a href="${escapeHtml(s[k])}" target="_blank" aria-label="${k}" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#089908] hover:text-black hover:border-[#089908] transition-all"><i class="${ic}"></i></a>`).join("");
+      return `<footer class="py-16 px-6 bg-black border-t border-white/5 text-center"><div class="flex justify-center gap-3 mb-8">${socials}</div><div class="text-4xl font-black tracking-tighter italic mb-6">LEO SNOW</div><div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-[11px] font-black uppercase tracking-[0.18em] opacity-60"><a href="privacy.html" class="hover:text-[#089908]">Privacy</a><a href="terms.html" class="hover:text-[#089908]">Terms</a><a href="contact.html" class="hover:text-[#089908]">Contact</a></div><p class="font-bold opacity-30 uppercase tracking-[0.5em] text-sm">© 2026 LEO SNOW WORLDWIDE</p></footer>`;
+    }
+
+    function renderApp() {
+      document.getElementById("root").innerHTML = Header() + LegalPage() + Footer();
+    }
+
+    async function initBackend() {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+      try {
+        await new Promise((resolve, reject) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'; s.onload = resolve; s.onerror = reject; document.head.appendChild(s); });
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await sb.from('site_content').select('data').eq('id', 1).maybeSingle();
+        if (!error && data && data.data) { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), data.data); appData.socials = Object.assign({}, DEFAULT_DATA.socials, appData.socials || {}); renderApp(); }
+        sb.channel('site-content').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, (payload) => { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), payload.new.data); appData.socials = Object.assign({}, DEFAULT_DATA.socials, appData.socials || {}); renderApp(); }).subscribe();
+      } catch (e) { console.warn('Supabase init failed', e); }
+    }
+
+    renderApp();
+    initBackend();
+  </script>
+</body>
+</html>

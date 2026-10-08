@@ -93,7 +93,7 @@
     function Footer() {
       const s = appData.socials || {};
       const socials = [["youtube", "fa-brands fa-youtube"], ["instagram", "fa-brands fa-instagram"], ["tiktok", "fa-brands fa-tiktok"], ["twitter", "fa-brands fa-x-twitter"], ["spotify", "fa-brands fa-spotify"], ["soundcloud", "fa-brands fa-soundcloud"]].filter(([k]) => s[k]).map(([k, ic]) => `<a href="${escapeHtml(s[k])}" target="_blank" aria-label="${k}" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#089908] hover:text-black hover:border-[#089908] transition-all"><i class="${ic}"></i></a>`).join("");
-      return `<footer class="py-16 px-6 bg-black border-t border-white/5 text-center"><div class="flex justify-center gap-3 mb-8">${socials}</div><div class="text-4xl font-black tracking-tighter italic mb-6">LEO SNOW</div><p class="font-bold opacity-30 uppercase tracking-[0.5em] text-sm">© 2026 LEO SNOW WORLDWIDE</p></footer>`;
+      return `<footer class="py-16 px-6 bg-black border-t border-white/5 text-center"><div class="flex justify-center gap-3 mb-8">${socials}</div><div class="text-4xl font-black tracking-tighter italic mb-6">LEO SNOW</div><div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-[11px] font-black uppercase tracking-[0.18em] opacity-60"><a href="privacy.html" class="hover:text-[#089908]">Privacy</a><a href="terms.html" class="hover:text-[#089908]">Terms</a><a href="contact.html" class="hover:text-[#089908]">Contact</a></div><p class="font-bold opacity-30 uppercase tracking-[0.5em] text-sm">© 2026 LEO SNOW WORLDWIDE</p></footer>`;
     }
 
     function renderApp() {

@@ -2,11 +2,19 @@
 
 > LEO SNOW — "Ghana Boy With A Different Flow" and "The Storm From Africa" — is an Afrobeats artist from Ghana blending afrobeats, alté and street soul into one cold wave.
 
-The official site is a one-page experience: a cinematic hero, the artist's story, a showcase room of visual moments, music releases with streaming links, tour events with ticket and calendar links, and a booking contact form. Content is managed live through a connected Supabase backend.
+The official site is a dark, cinematic multi-page experience: a scroll-zoom hero, the artist's story, a showcase room of visual moments, music releases with streaming links, tour events with ticket and calendar links, a full discography page, an about page with socials, and a booking contact form. Content is managed live through a connected Supabase backend.
 
-## Sections
+## Pages
 
-- [Home](https://inventor40028.github.io/leo-snow/): full-screen hero with the LEO SNOW brand, tagline "The Storm From Africa — the global takeover begins here", and a Stream Latest button.
+- [Home](https://inventor40028.github.io/leo-snow/): full-screen hero with the LEO SNOW brand, tagline "Ghana Boy With A Different Flow", and a Stream Latest button.
+- [Music (full discography)](https://inventor40028.github.io/leo-snow/music.html): every release with cover art, type and year, each with a Stream toggle for its platforms.
+- [About](https://inventor40028.github.io/leo-snow/about.html): the full artist bio, portrait, and a "Follow The Storm" section linking every social platform.
+- [Contact](https://inventor40028.github.io/leo-snow/contact.html): bookings and inquiries by email and a direct message form, plus socials.
+- [Merch](https://inventor40028.github.io/leo-snow/merch.html): the official store (launching soon).
+- [Terms](https://inventor40028.github.io/leo-snow/terms.html) and [Privacy](https://inventor40028.github.io/leo-snow/privacy.html): site policies.
+
+## Home page sections
+
 - [Music](https://inventor40028.github.io/leo-snow/#music): releases (singles, EPs, mixtapes) with cover art and direct links to streaming platforms (Spotify, Audiomack, Apple Music, YouTube Music, Boomplay, Deezer).
 - [Videos](https://inventor40028.github.io/leo-snow/#videos): official music videos embedded from YouTube.
 - [Events](https://inventor40028.github.io/leo-snow/#shows): upcoming shows with dates, cities, ticket links and add-to-calendar reminders.

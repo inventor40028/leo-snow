@@ -14,25 +14,34 @@ Leo Snow is the storm out of Africa — where afrobeats, alté and street soul c
 
 ## Site structure
 
-The official website (https://inventor40028.github.io/leo-snow/) is a single-page dark-themed experience built around a green (#089908) accent with yellow (#FFDE21) and red (#eb0905) highlights. Scrolling from the hero triggers a cinematic zoom into the content.
+The official website (https://inventor40028.github.io/leo-snow/) is a dark-themed multi-page experience built around a green (#089908) accent with yellow (#FFDE21) and red (#eb0905) highlights. Scrolling from the hero triggers a cinematic zoom into the content.
 
-### Hero
-Full-screen photography per device, the LEO SNOW logo, the boxed tagline "Ghana Boy With / A Different Flow" and a Stream Latest button that jumps to the music section.
+### Home (index.html)
+Single-page experience with these sections:
 
-### Videos
-Up to three official music videos embedded from YouTube, with a link to the artist's channel.
+- **Hero**: Full-screen photography per device, the LEO SNOW logo, the boxed tagline "Ghana Boy With / A Different Flow" and a Stream Latest button that jumps to the music section. A vertical social pill on mobile and header icons on desktop.
+- **Videos**: Up to three official music videos embedded from YouTube, behind a giant ghost "Videos" label.
+- **Music (Releases)**: Cover-art cards, each labeled with its type (Single, EP, Mixtape, Album) and year. A "Stream" toggle on each card reveals the platforms the release is available on: Spotify, Audiomack, Boomplay, Deezer, Apple Music, YouTube Music and custom links. Desktop shows 4 releases, mobile shows 8, with a "More Music" button to the full discography page when there are more.
+- **Events (Shows)**: White cards over a full-bleed event photograph: venue, date, city, a Tickets button when tickets are available, and a calendar icon that adds the show to Google or Apple Calendar as a reminder.
+- **About / Showcase Room**: The artist's story paired with a fan of showcase images. Clicking the focused card flips it open in 3D to reveal the image alongside its story; the first image carries the artist's own story. Arrow navigation walks through the images.
+- **Booking**: A "Get in touch" panel with the booking email and a Name / Email / Message form. Submissions are stored in the site's Supabase backend. A "Follow the storm" socials rail sits under the Listen card on desktop and under the form on mobile.
+- **Available On**: A fixed glass widget (bottom-right, desktop) linking to streaming platforms.
 
-### Music (Releases)
-Cover-art cards, each labeled with its type (Single, EP, Mixtape, Album) and year. A "Stream" toggle on each card reveals the platforms the release is available on: Spotify, Audiomack, Boomplay, Deezer, Apple Music, YouTube Music and custom links. A "Listen To Our Full Playlist" button links to streaming.
+### Music page (music.html)
+The full discography: every release with cover art, type and year, each with its own Stream toggle expanding its platform links. Sticky header and live Supabase updates.
 
-### Events (Shows)
-White cards over a full-bleed event photograph: venue, date, city, a Tickets button when tickets are available, and a calendar icon that adds the show to Google or Apple Calendar as a reminder.
+### About page (about.html)
+The full artist bio and a tilted, grayscale-to-color framed portrait, plus a "Follow The Storm" section: a grid of platform cards with hover-fill effects and a scrolling marquee of platform names, over a giant ghost "Socials" label.
 
-### About / Showcase Room
-The artist's story ("I'm Leo Snow. — Afrobeats Artist") paired with a fan of showcase images. Clicking the focused card flips it open in 3D to reveal the image alongside its story; the first image carries the artist's own story. Arrow navigation walks through the images.
+### Contact page (contact.html)
+Bookings and inquiries: the booking email card, a "Listen" card linking to the discography, a "Follow the storm" socials rail, and a Name / Email / Message form writing to the Supabase inbox.
 
-### Booking
-A "Get in touch" panel with the booking email and a Name / Email / Message form. Submissions are stored in the site's Supabase backend.
+### Merch page (merch.html)
+The official store landing — a branded "Coming Soon" with a ghost "Merch" label and an Instagram call to follow the drop.
+
+### Legal pages
+- **terms.html**: Terms of Service covering content use, intellectual property, events and tickets, merchandise, bookings, third-party links and user conduct.
+- **privacy.html**: Privacy Policy covering what the contact form collects, how messages are stored, retention, user rights and children's privacy. The site uses no cookies or tracking pixels.
 
 ## Platforms
 
@@ -40,11 +49,12 @@ A "Get in touch" panel with the booking email and a Name / Email / Message form.
 - SoundCloud: https://soundcloud.com
 - Apple Music: https://music.apple.com
 - BandCamp: https://bandcamp.com
-- Instagram, TikTok, X (Twitter), Facebook, Threads, Snapchat: linked from the site header and hero
+- Instagram, TikTok, X (Twitter), Facebook, Threads, Snapchat, Spotify, Audiomack: linked from the site header, hero pill, contact rail and the about page's Follow The Storm section. All editable from the admin Control Room.
 
 ## Technical notes
 
-- Static single-page site hosted on GitHub Pages
+- Static multi-page site hosted on GitHub Pages
 - Content served from a Supabase backend (site_content + messages tables) with realtime updates
 - Structured data (JSON-LD MusicGroup + Events) injected at runtime
-- Admin/management interface is not publicly linked
+- Socials are admin-managed and deep-merged over platform defaults, so an empty backend never wipes the seeded links
+- Admin/management interface is not publicly linked (disallowed in robots.txt)
