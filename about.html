@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LEO SNOW – About | The Storm From Africa</title>
+  <meta name="description" content="The full LEO SNOW story — where afrobeats, alté and street soul collide into one cold wave.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://inventor40028.github.io/leo-snow/about.html">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background: #000; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #089908; }
+    ::selection { background: #089908; color: black; }
+    .story-img { filter: grayscale(1); transition: filter 0.7s ease; }
+    .story-img:hover, .story-img.in-view { filter: grayscale(0); }
+    .bio-text { white-space: pre-line; }
+    button, a.btn-new { border-radius: 1rem; }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <div id="root"></div>
+
+  <script>
+    const SUPABASE_URL = "https://cwotoefcpjehfhxidbaw.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b3RvZWZjcGplaGZoeGlkYmF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjE2MjEsImV4cCI6MjEwNjc5NzYyMX0.3aPe4qed65H27PiVHfL1kvb_Vj_QIsH69chNbAp2ZDw";
+    let sb = null;
+
+    const DEFAULT_DATA = {
+      bio: { text: "Leo Snow is the storm out of Africa — where afrobeats, alté and street soul collide into one cold wave. Born in the noise, raised in the frequency, he turns every track into a blizzard of melody and motion. This isn't just music; it's a storm designed to move your pulse.", photo: "pics/hero.jpg" },
+      gallery: [], socials: {}
+    };
+    let appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
+
+    function Header() {
+      return `<nav class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10"><div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-4"><a href="index.html" class="text-lg font-black tracking-widest text-white hover:italic transition-all shrink-0">LEO SNOW</a><div class="flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.18em] text-gray-300"><a href="index.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Home</a><a href="music.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Music</a><a href="index.html#videos" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Videos</a><a href="index.html#shows" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Events</a><a href="merch.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Merch</a><a href="index.html#contact" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Booking</a></div></div></nav>`;
+    }
+
+    function AboutPage() {
+      const bio = appData.bio || {};
+      const photo = bio.photo || "pics/hero.jpg";
+      const text = bio.text || DEFAULT_DATA.bio.text;
+      const s = appData.socials || {};
+      const socials = [["instagram", "fa-brands fa-instagram", "Instagram"], ["tiktok", "fa-brands fa-tiktok", "TikTok"], ["youtube", "fa-brands fa-youtube", "YouTube"], ["spotify", "fa-brands fa-spotify", "Spotify"], ["soundcloud", "fa-brands fa-soundcloud", "SoundCloud"], ["audiomack", "fa-solid fa-headphones", "Audiomack"]].filter(([k]) => s[k]).map(([k, ic, label]) => `<a href="${escapeHtml(s[k])}" target="_blank" class="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 hover:border-[#089908]/60 transition-all"><i class="${ic} text-white"></i><span class="text-sm font-bold text-white">${label}</span></a>`).join("");
+      return `<main class="relative py-20 px-6 overflow-hidden">
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(8,153,8,0.12) 0%, rgba(0,0,0,0) 65%);"></div>
+        <div class="relative max-w-5xl mx-auto">
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="relative">
+              <div class="absolute -inset-4 bg-[#089908] rotate-3 rounded-2xl"></div>
+              <img src="${escapeHtml(photo)}" alt="LEO SNOW portrait" class="story-img relative aspect-[4/5] object-cover w-full rounded-2xl border-2 border-black">
+            </div>
+            <div>
+              <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6"><span class="w-5 h-5 rounded-full bg-[#089908]/20 border border-[#089908] text-[#089908] flex items-center justify-center text-[10px]"><i class="fa-solid fa-bolt"></i></span><span class="text-xs font-black uppercase tracking-[0.2em] text-gray-300">About</span></div>
+              <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white mb-6">I'M LEO<br>SNOW<span class="text-[#089908]">.</span></h1>
+              <p class="bio-text text-lg md:text-xl text-gray-300 font-bold leading-relaxed">${escapeHtml(text)}</p>
+              <div class="flex flex-wrap gap-3 mt-8">${socials || ''}</div>
+              <a href="music.html" class="inline-block mt-8 bg-[#089908] text-black px-8 py-4 font-black uppercase tracking-wide hover:bg-[#FFDE21] transition-all shadow-[8px_8px_0px_0px_rgba(255,255,255,0.15)]">Listen To The Music →</a>
+            </div>
+          </div>
+        </div>
+      </main>`;
+    }
+
+    function Footer() {
+      const s = appData.socials || {};
+      const socials = [["youtube", "fa-brands fa-youtube"], ["instagram", "fa-brands fa-instagram"], ["tiktok", "fa-brands fa-tiktok"], ["twitter", "fa-brands fa-x-twitter"], ["spotify", "fa-brands fa-spotify"], ["soundcloud", "fa-brands fa-soundcloud"]].filter(([k]) => s[k]).map(([k, ic]) => `<a href="${escapeHtml(s[k])}" target="_blank" aria-label="${k}" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#089908] hover:text-black hover:border-[#089908] transition-all"><i class="${ic}"></i></a>`).join("");
+      return `<footer class="py-16 px-6 bg-black border-t border-white/5 text-center"><div class="flex justify-center gap-3 mb-8">${socials}</div><div class="text-4xl font-black tracking-tighter italic mb-6">LEO SNOW</div><p class="font-bold opacity-30 uppercase tracking-[0.5em] text-sm">© 2026 LEO SNOW WORLDWIDE</p></footer>`;
+    }
+
+    function renderApp() {
+      document.getElementById("root").innerHTML = Header() + AboutPage() + Footer();
+      // colorize the portrait when it scrolls into view
+      const img = document.querySelector('.story-img');
+      if (img && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { img.classList.add('in-view'); io.unobserve(img); } }); }, { threshold: 0.4 });
+        io.observe(img);
+      }
+    }
+
+    async function initBackend() {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+      try {
+        await new Promise((resolve, reject) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'; s.onload = resolve; s.onerror = reject; document.head.appendChild(s); });
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await sb.from('site_content').select('data').eq('id', 1).maybeSingle();
+        if (!error && data && data.data) { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), data.data); renderApp(); }
+        sb.channel('site-content').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, (payload) => { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), payload.new.data); renderApp(); }).subscribe();
+      } catch (e) { console.warn('Supabase init failed', e); }
+    }
+
+    renderApp();
+    initBackend();
+  </script>
+</body>
+</html>

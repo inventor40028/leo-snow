@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LEO SNOW – Music | All Releases</title>
+  <meta name="description" content="Every LEO SNOW release — singles, EPs and mixtapes — with streaming links on every platform.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://inventor40028.github.io/leo-snow/music.html">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background: #000; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #089908; border-radius: 0; }
+    ::selection { background: #089908; color: black; }
+
+    .music-card { background: #fff; border-radius: 1rem; overflow: hidden; transition: transform 0.3s cubic-bezier(0.2,0.9,0.2,1), box-shadow 0.3s; }
+    .music-card:hover { transform: translateY(-6px); box-shadow: 0 20px 30px -12px rgba(8,153,8,0.35); }
+    .music-card .stream-panel { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; }
+    .music-card .stream-panel.open { max-height: 420px; opacity: 1; }
+    .empty-message { color: #089908; text-transform: uppercase; font-weight: 900; letter-spacing: 0.15em; font-size: 0.9rem; padding: 3rem 1rem; border: 1px dashed rgba(8,153,8,0.4); border-radius: 1rem; text-align: center; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    button, a.btn-new { border-radius: 1rem; }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <div id="root"></div>
+
+  <script>
+    const SUPABASE_URL = "https://cwotoefcpjehfhxidbaw.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b3RvZWZjcGplaGZoeGlkYmF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjE2MjEsImV4cCI6MjEwNjc5NzYyMX0.3aPe4qed65H27PiVHfL1kvb_Vj_QIsH69chNbAp2ZDw";
+    let sb = null;
+
+    const DEFAULT_DATA = {
+      bio: { text: "", photo: "" },
+      releases: [], socials: {}
+    };
+    let appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
+
+    function Header() {
+      return `<nav class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10"><div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-4"><a href="index.html" class="text-lg font-black tracking-widest text-white hover:italic transition-all shrink-0">LEO SNOW</a><div class="flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.18em] text-gray-300"><a href="index.html" class="hover:text-white hover:border-[#089908] border-b-2 border-transparent transition-all">Home</a><a href="index.html#videos" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Videos</a><a href="index.html#shows" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Events</a><a href="about.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">About</a><a href="merch.html" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Merch</a><a href="index.html#contact" class="hover:text-white border-b-2 border-transparent hover:border-[#089908] transition-all">Booking</a></div></div></nav>`;
+    }
+
+    function MusicPage() {
+      const releases = appData.releases || [];
+      const card = (r, idx) => {
+        const platforms = [["spotify", "Spotify", "fa-brands fa-spotify"], ["audiomack", "Audiomack", "fa-solid fa-headphones"], ["boomplay", "Boomplay", "fa-solid fa-play"], ["deezer", "Deezer", "fa-brands fa-deezer"], ["apple", "Apple Music", "fa-brands fa-apple"], ["youtubemusic", "YouTube Music", "fa-brands fa-youtube"], ["custom", "Website", "fa fa-link"]].filter(p => r[p[0]]);
+        const links = platforms.map(p => `<a href="${escapeHtml(r[p[0]])}" target="_blank" class="flex items-center gap-2 bg-black text-white text-[11px] font-black uppercase tracking-wide px-3 py-2.5 rounded-lg hover:bg-[#089908] transition-colors"><i class="${p[2]}"></i>${p[1]}</a>`).join("");
+        return `<div class="music-card"><div class="relative"><img src="${escapeHtml(r.art)}" alt="${escapeHtml(r.title)} cover" class="w-full aspect-square object-cover" loading="lazy"><span class="absolute top-3 left-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1">${escapeHtml(r.type)}</span>${idx === 0 ? '<div class="bg-white text-black text-center text-[11px] font-black uppercase tracking-[0.35em] py-2.5 border-t border-gray-100">Featured</div>' : ""}</div><div class="p-4"><h3 class="font-black uppercase text-lg leading-tight text-black">${escapeHtml(r.title)}</h3><p class="text-sm text-gray-500 mt-1">${escapeHtml(r.type)} · ${escapeHtml(r.year)}</p><div class="border-t border-gray-200 mt-3 pt-3"><button class="stream-toggle flex items-center gap-2 text-sm font-bold text-black hover:text-[#089908] transition-colors" data-id="${r.id}">Stream <i class="fa fa-chevron-down text-[10px] transition-transform"></i></button></div><div class="stream-panel mt-3" data-panel="${r.id}"><div class="grid grid-cols-2 gap-2">${links}</div></div></div></div>`;
+      };
+      const body = releases.length === 0
+        ? `<div class="empty-message">🎵 No releases yet. Check back soon.</div>`
+        : `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">${releases.map(card).join("")}</div>`;
+      return `<main class="relative py-20 px-6 overflow-hidden"><div class="pointer-events-none select-none absolute inset-x-0 bottom-0 text-center font-black uppercase leading-none text-white/[0.06]" style="font-size: clamp(4.5rem, 14vw, 12rem);">Music</div><div class="relative max-w-7xl mx-auto"><div class="fade-left mb-12"><h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter text-[#089908]">All Music</h1><p class="text-gray-400 mt-4 max-w-xl">Every release, newest first. Tap Stream on any cover for the platform links.</p></div>${body}</div></main>`;
+    }
+
+    function Footer() {
+      const s = appData.socials || {};
+      const socials = [["youtube", "fa-brands fa-youtube"], ["instagram", "fa-brands fa-instagram"], ["tiktok", "fa-brands fa-tiktok"], ["twitter", "fa-brands fa-x-twitter"], ["spotify", "fa-brands fa-spotify"], ["soundcloud", "fa-brands fa-soundcloud"]].filter(([k]) => s[k]).map(([k, ic]) => `<a href="${escapeHtml(s[k])}" target="_blank" aria-label="${k}" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#089908] hover:text-black hover:border-[#089908] transition-all"><i class="${ic}"></i></a>`).join("");
+      return `<footer class="py-16 px-6 bg-black border-t border-white/5 text-center"><div class="flex justify-center gap-3 mb-8">${socials}</div><div class="text-4xl font-black tracking-tighter italic mb-6">LEO SNOW</div><p class="font-bold opacity-30 uppercase tracking-[0.5em] text-sm">© 2026 LEO SNOW WORLDWIDE</p></footer>`;
+    }
+
+    function renderApp() {
+      document.getElementById("root").innerHTML = Header() + MusicPage() + Footer();
+      document.querySelectorAll('.stream-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panel = btn.closest('.music-card')?.querySelector('.stream-panel');
+          if (!panel) return;
+          const open = panel.classList.toggle('open');
+          const chev = btn.querySelector('i');
+          if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+          btn.classList.toggle('text-[#089908]', open);
+        });
+      });
+    }
+
+    async function initBackend() {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+      try {
+        await new Promise((resolve, reject) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'; s.onload = resolve; s.onerror = reject; document.head.appendChild(s); });
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await sb.from('site_content').select('data').eq('id', 1).maybeSingle();
+        if (!error && data && data.data) { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), data.data); renderApp(); }
+        sb.channel('site-content').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, (payload) => { appData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), payload.new.data); renderApp(); }).subscribe();
+      } catch (e) { console.warn('Supabase init failed', e); }
+    }
+
+    renderApp();
+    initBackend();
+  </script>
+</body>
+</html>
