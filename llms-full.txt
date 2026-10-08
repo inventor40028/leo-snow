@@ -48,8 +48,8 @@ The official store landing — a branded "Coming Soon" with a ghost "Merch" labe
 - YouTube: https://youtube.com
 - SoundCloud: https://soundcloud.com
 - Apple Music: https://music.apple.com
-- BandCamp: https://bandcamp.com
-- Instagram, TikTok, X (Twitter), Facebook, Threads, Snapchat, Spotify, Audiomack: linked from the site header, hero pill, contact rail and the about page's Follow The Storm section. All editable from the admin Control Room.
+- Audiomack: https://audiomack.com
+- Instagram, TikTok, X (Twitter), Facebook, Threads, Snapchat, Spotify: linked from the site header, hero pill, contact rail and the about page's Follow The Storm section. All editable from the admin Control Room.
 
 ## Technical notes
 
